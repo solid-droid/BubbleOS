@@ -6,6 +6,10 @@
 ![file_struct_watch (1)](https://user-images.githubusercontent.com/32586986/120099852-62e08c80-c15b-11eb-9c17-4057352394ea.png)
 
 ## Logs:  
+> 31-05-2021
+
+1. Added Brightness Control on Top section swipe
+
 > 30-05-2021  
 
 Just started development
