@@ -1,7 +1,7 @@
 /*
  * Bubble OS for Lilygo T-Watch 2020 v2 
- * Created By Nikhil.M.Jeby
- * Github: 
+ * Created By Nikhil M Jeby
+ * Github: https://github.com/solid-droid/Bubble-OS
 */
 #include "config.h"
 #include <soc/rtc.h>
