@@ -22,7 +22,7 @@ int dragThreshold       = 500;           //Threshold millis to treat tap as drag
 int holdThreshold       = 0;             //Allowed movement range in hold mode.
 uint32_t touchTime      = 0;             //Touch start time millis
 char* SYS_devices[]     = {"display", "gps", "backlight", "touch"};
-uint8_t Max_APPS        = 20;            // Max external app count = 20
+int Max_APPS            = 20;            // Max external app count = 20
 String APP_list[Max_APPS];                     
 uint8_t APP_count       = 0;  
 File APP_SD;
@@ -52,7 +52,7 @@ void setup() {
   ttgo->begin();
   BOOT();
   SYS_getAPPS();
-//APP_showAppList();
+APP_showAppList();
   ttgo->tft->setTextSize(2);
 }
 
