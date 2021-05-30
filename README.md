@@ -3,7 +3,7 @@
 ![Bubble OS design](https://user-images.githubusercontent.com/32586986/120096651-5273e600-c14a-11eb-86ec-2ac5abeb7cb9.png)
 > File Structure  
 
-![file_struct_watch](https://user-images.githubusercontent.com/32586986/120098379-2c067880-c153-11eb-9aa0-b886fabe1d6e.png)
+![file_struct_watch (1)](https://user-images.githubusercontent.com/32586986/120099852-62e08c80-c15b-11eb-9c17-4057352394ea.png)
 
 ## Logs:  
 > 30-05-2021  
