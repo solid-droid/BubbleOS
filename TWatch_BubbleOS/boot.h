@@ -1,0 +1,99 @@
+void BOOT_power(String type, bool value = false)
+{
+  if(type == SYS_devices[0]){
+    ttgo->power->setPowerOutPut(AXP202_LDO3, value);}
+  else if (type == SYS_devices[1]){
+    ttgo->power->setPowerOutPut(AXP202_LDO4, value);}
+  else if (type == SYS_devices[2]){
+    ttgo->power->setPowerOutPut(AXP202_LDO2, value);}
+  else if (type == SYS_devices[3]){
+    ttgo->power->setPowerOutPut(AXP202_EXTEN, value);
+  }
+}
+
+void BOOT_setBrightness(int value)
+{
+  ttgo->setBrightness(value);
+}
+
+void BOOT_clearIRQ()
+{
+     irq = false;
+     ttgo->power->clearIRQ();
+}
+
+void BOOT_deepSleep()
+{
+
+  ttgo->power->setPowerOutPut(AXP202_DCDC2, false);
+  esp_sleep_enable_ext1_wakeup(GPIO_SEL_35, ESP_EXT1_WAKEUP_ALL_LOW);
+  esp_deep_sleep_start(); 
+}
+
+void BOOT_beginSystem(){
+  ttgo->tft->fillScreen(TFT_BLACK);
+  ttgo->rtc->check();
+  ttgo->rtc->syncToSystem();
+  ttgo->openBL(); 
+}
+
+bool BOOT_deviceStatus(String type)
+{
+  if ( type == SYS_devices[0]){
+    return ttgo->power->isLDO3Enable();
+  }
+  if ( type == SYS_devices[1]){
+    return ttgo->power->isLDO4Enable();
+  }
+  if ( type == SYS_devices[2]){
+    return ttgo->power->isLDO2Enable();
+  }
+}
+
+void BOOT_init_loadingScreen(){
+  byte xpos = 40; // Stating position for the display
+  byte ypos = 90;
+
+  ttgo->tft->setTextSize(2);
+  ttgo->tft->setTextColor(0x6E2B, TFT_BLACK);
+  ttgo->tft->drawString("Loading...", xpos, ypos);
+}
+
+void BOOT_powerButton(){
+   pinMode(AXP202_INT, INPUT_PULLUP);
+   attachInterrupt(AXP202_INT, [] {irq = true;}, FALLING);
+   ttgo->power->enableIRQ(AXP202_PEK_SHORTPRESS_IRQ, true);
+   ttgo->power->clearIRQ();
+   ttgo->power->setPowerOutPut(AXP202_DCDC2, false);
+}
+
+void BOOT_exit_loadingScreen(){
+  byte xpos = 10; // Stating position for the display
+  byte ypos = 90;
+
+  ttgo->tft->setTextSize(2);
+  ttgo->tft->setTextColor(0x6E2B, TFT_BLACK);
+  ttgo->tft->drawString("..Welcome..", xpos, ypos);
+}
+
+void BOOT_RTC(){
+ pinMode(RTC_INT_PIN, INPUT_PULLUP);
+    attachInterrupt(RTC_INT_PIN, [] {
+        rtcIrq = 1;
+    }, FALLING);
+
+    ttgo->rtc->disableAlarm();
+    ttgo->rtc->check();
+    ttgo->rtc->syncToSystem();
+}
+
+void BOOT() {
+
+  BOOT_beginSystem();
+  BOOT_init_loadingScreen();
+  BOOT_powerButton();
+  BOOT_power(SYS_devices[1], false);
+  BOOT_RTC();
+  delay(1000);
+  BOOT_exit_loadingScreen();
+}
