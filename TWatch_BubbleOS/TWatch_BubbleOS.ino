@@ -23,7 +23,7 @@ int holdThreshold       = 0;             //Allowed movement range in hold mode.
 uint32_t touchTime      = 0;             //Touch start time millis
 char* SYS_devices[]     = {"display", "gps", "backlight", "touch"};
 int Max_APPS            = 20;            // Max external app count = 20
-String APP_list[Max_APPS];                     
+String APP_list[20];                     // Max external app count = 20
 uint8_t APP_count       = 0;  
 File APP_SD;
 File SYS_SD;
