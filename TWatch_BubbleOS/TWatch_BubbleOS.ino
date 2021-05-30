@@ -22,11 +22,19 @@ int dragThreshold       = 500;           //Threshold millis to treat tap as drag
 int holdThreshold       = 0;             //Allowed movement range in hold mode.
 uint32_t touchTime      = 0;             //Touch start time millis
 char* SYS_devices[]     = {"display", "gps", "backlight", "touch"};
+String APP_list[20];
+uint8_t APP_count       = 0;  
+uint8_t Max_APPS        = 20;
+File APP_SD;
+File SYS_SD;
 /////////////////////////////////////////////////////////////////////////////////////////////////
 TTGOClass *ttgo;
 
 #include "boot.h"
 #include "system.h"
+#include "application.h"
+#include "backend.h"
+#include "frontend.h"
 
 bool touchPointChange(int x, int y){
   
@@ -40,12 +48,12 @@ bool touchPointChange(int x, int y){
   }
 }
 void setup() {
-  Serial.begin(115200);
   ttgo = TTGOClass::getWatch();
   ttgo->begin();
   BOOT();
+  SYS_getAPPS();
+  APP_showAppList();
   ttgo->tft->setTextSize(2);
-  Serial.println("loading");
 }
 
 void loop() {
@@ -89,16 +97,8 @@ void loop() {
     drag  = false;
  }
 /////////////////////--Application--//////////////////////////////////////////
-   if(tap){
-    ttgo->tft->drawString("tap", 10, 20);
-   }
-   if(drag){
-     ttgo->tft->drawString("drag", 10, 20);
-   }
-   if(hold){
-     ttgo->tft->drawString("hold", 10, 20);
-   }
-
+   BEND_begin(x,y);
+   FEND_begin(x,y);
 ////////////////////--Home--//////////////////////////////////////////////////////////
     ttgo->tft->setTextSize(2);
     ttgo->tft->drawString("..."+String(ttgo->rtc->formatDateTime())+"...", 10, 90);

@@ -87,6 +87,21 @@ void BOOT_RTC(){
     ttgo->rtc->syncToSystem();
 }
 
+void BOOT_getFileList() {
+    File entry =  SD.open("/BubbleOS");
+    if (entry) {
+       APP_SD =  SD.open("/BubbleOS/Apps");
+       SYS_SD =  SD.open("BubbleOS/System");
+    }
+    entry.close();
+}
+
+void BOOT_SD()
+{
+   if (ttgo->sdcard_begin()) {
+    BOOT_getFileList();
+   }
+}
 void BOOT() {
 
   BOOT_beginSystem();
@@ -94,6 +109,7 @@ void BOOT() {
   BOOT_powerButton();
   BOOT_power(SYS_devices[1], false);
   BOOT_RTC();
+  BOOT_SD();
   delay(1000);
   BOOT_exit_loadingScreen();
 }
