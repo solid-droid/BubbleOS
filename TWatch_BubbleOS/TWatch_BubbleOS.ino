@@ -14,8 +14,8 @@ char* SYS_devices[]     = {"display", "gps", "backlight", "touch"};
 uint8_t APP_count       = 0;  
 int  battery            = 100;          //Stores current battery percentage.                         
 float batteryTime       = 0;            //Stores battery time avaible before next charge.                 
-bool FEND_task[2] = {false, false};     //For more frontend tasks add to this register
-bool BEND_task[2] = {false, false};     //For more backend  tasks add to this register
+bool FEND_task[20];                     //Frontend taskManager
+bool BEND_task[20];                     //Backend  taskManager
 File APP_SD;
 File SYS_SD;
 int  idleTimeTracker    = 0;

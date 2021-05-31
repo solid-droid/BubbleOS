@@ -5,7 +5,16 @@ bool FEND_home(){
  return false;
 }
 
+bool FEND_batteryIcon()
+{
+  return true;
+}
 
+bool FEND_menuIcon()
+{
+
+  return true;
+}
 
 ///////////////////--Main Thread--//////////////////////////////
 void FEND_begin(int x, int y)
@@ -13,5 +22,11 @@ void FEND_begin(int x, int y)
 
  if(!FEND_task[0])
  FEND_task[0] = FEND_home();
+
+ if(!FEND_task[1])
+ FEND_task[1] = FEND_batteryIcon();
+
+ if(!FEND_task[2])
+ FEND_task[2] = FEND_menuIcon();
 
 }
