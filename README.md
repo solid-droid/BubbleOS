@@ -10,6 +10,7 @@
 > 01-06-2021 
 
 1. Added Battery remaining ON time calculation based on load current.
+2. Clear and Draw text (to minimize flickering)
 
 > 31-05-2021
 
