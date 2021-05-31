@@ -3,12 +3,14 @@
 ![Bubble OS design](https://user-images.githubusercontent.com/32586986/120096651-5273e600-c14a-11eb-86ec-2ac5abeb7cb9.png)
 > File Structure  
 
-![file_struct_watch (1)](https://user-images.githubusercontent.com/32586986/120099852-62e08c80-c15b-11eb-9c17-4057352394ea.png)
+![file_struct_watch (2)](https://user-images.githubusercontent.com/32586986/120196580-a3183b80-c23d-11eb-99d6-1febd3c8f595.png)
+
 
 ## Logs:  
 > 31-05-2021
 
 1. Added Brightness Control on Top section swipe
+2. Added autoDim , autoSleep, autoDeepSleep, touch to wakeup.
 
 > 30-05-2021  
 
