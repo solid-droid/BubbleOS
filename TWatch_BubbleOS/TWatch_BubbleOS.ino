@@ -70,13 +70,9 @@ void setup() {
   previousMillis = millis();
 }
 
-int test =10000;
 void loop() {
  if(previousMillis+1000<=millis())
   {
-    test = test/10;
-    APP_drawText(String(test), 150, 50, 18); 
-        if(test<=0) test =100000000;
     previousMillis=millis();
     idleTimeTracker+=1;
   }

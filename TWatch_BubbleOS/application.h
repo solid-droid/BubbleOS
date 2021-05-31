@@ -14,8 +14,8 @@ void APP_drawText(String text, uint8_t x, uint8_t y, uint8_t maxChar = -1,
   uint8_t h = 7*fontSize;
   uint8_t w = 5*fontSize;
   uint8_t charCount = text.length();
-  uint8_t rightX = (charCount+1)*w-5;
-  uint8_t width = (maxChar-charCount)*w+9 + rightX > 240 ? 240 : (maxChar-charCount)*w+9;   
+  uint8_t rightX = x + (charCount+1)*w-9;
+  uint8_t width = (maxChar-charCount)*w+9; 
   if(maxChar > 0) ttgo->tft->fillRect(rightX , y, width , h , background);
   
   ttgo->tft->setTextColor(color, background);
