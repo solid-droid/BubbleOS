@@ -7,6 +7,10 @@
 
 
 ## Logs:  
+> 01-06-2021 
+
+1. Added Battery remaining ON time calculation based on load current.
+
 > 31-05-2021
 
 1. Added Brightness Control on Top section swipe
