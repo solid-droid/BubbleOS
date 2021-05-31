@@ -12,8 +12,10 @@ bool irq                = false;
 bool rtcIrq             = false;
 char* SYS_devices[]     = {"display", "gps", "backlight", "touch"};
 uint8_t APP_count       = 0;  
-int  battery;                 
-bool FEND_task[2] = {false, false};
+int  battery            = 100;          //Stores current battery percentage.                         
+float batteryTime       = 0;            //Stores battery time avaible before next charge.                 
+bool FEND_task[2] = {false, false};     //For more frontend tasks add to this register
+bool BEND_task[2] = {false, false};     //For more backend  tasks add to this register
 File APP_SD;
 File SYS_SD;
 int  idleTimeTracker    = 0;
@@ -26,11 +28,11 @@ bool dragStart          = false;         //Detected drag/hold Start
 bool dragEnd            = false;         //Detected drag/hold Start
 bool hold               = false;         //Detected hold
 uint32_t touchTime      = 0;             //Touch start time millis
-bool watchInSleep       = false;        
+bool watchInSleep       = false;   
 //////////////--Tunable Variable--////////////////////////////////////////////////////////////////
-int  idleTime0          = 5;             //Maximum allowed idle time (sec) before screen dims (No touch)
-int  idleTime1          = 7;             //Maximum allowed idle time (sec) before screen turns off (No touch)
-int  idleTime2          = 20;            //Maximum allowed idle time (sec) before shutDown
+int  idleTime0          = 7;             //Maximum allowed idle time (sec) before screen dims (No touch)
+int  idleTime1          = 15;            //Maximum allowed idle time (sec) before screen turns off (No touch)
+int  idleTime2          = 120;           //Maximum allowed idle time (sec) before shutDown
 int  dragThreshold      = 500;           //Threshold millis to treat tap as drag/hold.
 int  holdThreshold      = 0;             //Allowed movement range in hold mode.
 int  Max_APPS           = 20;            //Max external app count = 20
@@ -59,7 +61,6 @@ bool touchPointChange(int x, int y){
 void setup() {
   ttgo = TTGOClass::getWatch();
   ttgo->begin();
-  ttgo->lvgl_begin();
   BOOT();
   BOOT_setBrightness(loadBrightness);
   SYS_getAPPS();
@@ -77,6 +78,7 @@ void loop() {
   }
 /////////////--Power  Saving--//////////////////////////////
   SYS_getBatteryLevel();
+  SYS_getRemainingTime();
   SYS_savePower();
 ///////////////--Touch Control--/////////////////////////////
   int16_t x, y;
@@ -127,7 +129,6 @@ void loop() {
 /////////////////////--Application--//////////////////////////////////////////
    BEND_begin(x,y);
    FEND_begin(x,y);
-   lv_task_handler();
 ////////////////////--Power Button Control--//////////////////////////////////////////
   if(irq)
   {

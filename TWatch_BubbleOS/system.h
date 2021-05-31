@@ -43,8 +43,37 @@ void SYS_getBatteryLevel(){
     battery = ttgo->power->getBattPercentage();
 }
 
+float SYS_getDischargeTime(){
+  float totalTime = ttgo->power->getBattDischargeCurrent();
+  if(totalTime > 0)
+  {
+    totalTime = 380.0/ totalTime;
+  }else
+  {
+    totalTime = 1;
+  }
+  return totalTime;
+  
+}
+
 void SYS_savePower(){
     if(idleTimeTracker>idleTime0 && idleTimeTracker<idleTime1)      BOOT_setBrightness(7, false);
     else if(idleTimeTracker>idleTime1 && idleTimeTracker<idleTime2) SYS_sleep();
     else if(idleTimeTracker>idleTime2)                              BOOT_deepSleep();
+}
+
+float SYS_timeMean=0;
+uint16_t SYS_timeMeanArrCounter=0;
+void SYS_getRemainingTime()
+{
+  float dischargeRate = SYS_getDischargeTime();
+  if(dischargeRate>5){
+    SYS_timeMean += dischargeRate*battery/100;
+    if(SYS_timeMeanArrCounter>500){
+      batteryTime = SYS_timeMean/SYS_timeMeanArrCounter;
+      SYS_timeMean = 0;
+      SYS_timeMeanArrCounter = 0;
+    } 
+    SYS_timeMeanArrCounter+=1;
+  }
 }
