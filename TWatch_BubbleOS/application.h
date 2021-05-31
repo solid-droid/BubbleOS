@@ -3,3 +3,6 @@ void APP_showAppList(){
   for(int i=0; i < APP_count; ++i)
   ttgo->tft->drawString(APP_list[i], 10, 50 + 10*i);
 }
+
+
+//////////////////////--UI functions--/////////////////////////

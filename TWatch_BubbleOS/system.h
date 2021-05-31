@@ -7,17 +7,20 @@ void SYS_devicePower(bool value)
 }
 void SYS_sleep()
 {
+ watchInSleep= true;
  BOOT_power(SYS_devices[2], false);
 }
 
 void SYS_wakeup()
 {
+  watchInSleep= false;
   BOOT_power(SYS_devices[2], true);
 }
 
 void SYS_powerOFF()
 {
-   SYS_sleep();
+   watchInSleep= true;
+   SYS_devicePower(false);
    BOOT_deepSleep();
 }
 
@@ -34,4 +37,14 @@ void SYS_getAPPS(){
         i++;
       }
    }
+}
+
+void SYS_getBatteryLevel(){
+    battery = ttgo->power->getBattPercentage();
+}
+
+void SYS_savePower(){
+    if(idleTimeTracker>idleTime0 && idleTimeTracker<idleTime1)      BOOT_setBrightness(7, false);
+    else if(idleTimeTracker>idleTime1 && idleTimeTracker<idleTime2) SYS_sleep();
+    else if(idleTimeTracker>idleTime2)                              BOOT_deepSleep();
 }

@@ -11,8 +11,9 @@ void BOOT_power(String type, bool value = false)
   }
 }
 
-void BOOT_setBrightness(int value)
+void BOOT_setBrightness(int value, bool save = true)
 {
+  if(save) loadBrightness = value;
   ttgo->setBrightness(value);
 }
 
@@ -24,14 +25,12 @@ void BOOT_clearIRQ()
 
 void BOOT_deepSleep()
 {
-
   ttgo->power->setPowerOutPut(AXP202_DCDC2, false);
   esp_sleep_enable_ext1_wakeup(GPIO_SEL_35, ESP_EXT1_WAKEUP_ALL_LOW);
   esp_deep_sleep_start(); 
 }
 
 void BOOT_beginSystem(){
-  ttgo->tft->fillScreen(TFT_BLACK);
   ttgo->rtc->check();
   ttgo->rtc->syncToSystem();
   ttgo->openBL(); 
@@ -53,7 +52,7 @@ bool BOOT_deviceStatus(String type)
 void BOOT_init_loadingScreen(){
   byte xpos = 40; // Stating position for the display
   byte ypos = 90;
-
+  ttgo->tft->fillScreen(TFT_BLACK);
   ttgo->tft->setTextSize(2);
   ttgo->tft->setTextColor(0x6E2B, TFT_BLACK);
   ttgo->tft->drawString("Loading...", xpos, ypos);
@@ -65,15 +64,6 @@ void BOOT_powerButton(){
    ttgo->power->enableIRQ(AXP202_PEK_SHORTPRESS_IRQ, true);
    ttgo->power->clearIRQ();
    ttgo->power->setPowerOutPut(AXP202_DCDC2, false);
-}
-
-void BOOT_exit_loadingScreen(){
-  byte xpos = 10; // Stating position for the display
-  byte ypos = 90;
-
-  ttgo->tft->setTextSize(2);
-  ttgo->tft->setTextColor(0x6E2B, TFT_BLACK);
-  ttgo->tft->drawString("..Welcome..", xpos, ypos);
 }
 
 void BOOT_RTC(){
@@ -103,13 +93,10 @@ void BOOT_SD()
    }
 }
 void BOOT() {
-
+//  BOOT_init_loadingScreen();
   BOOT_beginSystem();
-  BOOT_init_loadingScreen();
   BOOT_powerButton();
   BOOT_power(SYS_devices[1], false);
   BOOT_RTC();
   BOOT_SD();
-  delay(1000);
-  BOOT_exit_loadingScreen();
 }
