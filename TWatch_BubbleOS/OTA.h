@@ -3,32 +3,46 @@ void OTA_currentVersion(uint8_t x, uint8_t y)
   APP_drawText("ver: "+ FirmwareVer, x, y, 13);
 }
 
+void HttpEvent(HttpEvent_t *event)
+{
+    switch(event->event_id) {
+        case HTTP_EVENT_ERROR:
+            Serial.println("Http Event Error");
+            break;
+        case HTTP_EVENT_ON_CONNECTED:
+            Serial.println("Http Event On Connected");
+            break;
+        case HTTP_EVENT_HEADER_SENT:
+            Serial.println("Http Event Header Sent");
+            break;
+        case HTTP_EVENT_ON_HEADER:
+            Serial.printf("Http Event On Header, key=%s, value=%s\n", event->header_key, event->header_value);
+            break;
+        case HTTP_EVENT_ON_DATA:
+            break;
+        case HTTP_EVENT_ON_FINISH:
+            Serial.println("Http Event On Finish");
+            break;
+        case HTTP_EVENT_DISCONNECTED:
+            Serial.println("Http Event Disconnected");
+            break;
+    }
+}
+
 void OTA_updateFirmware(void)
 {
-  WiFiClientSecure client;
-  client.setCACert(rootCACertificate);
-  t_httpUpdate_return ret = httpUpdate.update(client, URL_fw_Bin);
-
-  switch (ret) {
-  case HTTP_UPDATE_FAILED:
-    Serial.printf("HTTP_UPDATE_FAILD Error (%d): %s\n", httpUpdate.getLastError(), httpUpdate.getLastErrorString().c_str());
-    break;
-
-  case HTTP_UPDATE_NO_UPDATES:
-    Serial.println("HTTP_UPDATE_NO_UPDATES");
-    break;
-
-  case HTTP_UPDATE_OK:
-    Serial.println("HTTP_UPDATE_OK");
-    break;
-  }
+Upgrade = true;
+HttpsOTA.onHttpEvent(HttpEvent);
+Serial.println("Starting OTA");
+HttpsOTA.begin(firmware_url, rootCACertificate); 
+ Serial.println("Please Wait it takes some time ...");
 }
 
 bool OTA_FirmwareVersionCheck(void) {
   String payload;
   int httpCode;
   String fwurl = "";
-  fwurl += URL_fw_Version;
+  fwurl += version_url;
   fwurl += "?";
   fwurl += String(rand());
   Serial.println(fwurl);
