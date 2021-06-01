@@ -73,14 +73,8 @@ TTGOClass *ttgo;
 
 void TaskManager(void *parameters)
 {
-    /////////--Begin Background Tasks--///////
-  vTaskResume(task_BEND_idleTimeTracker);
-  vTaskResume(task_BEND_systemMonitoring);
-  vTaskResume(task_BEND_touchDetection);
-  vTaskResume(task_BEND_powerButtonInterrupt);
-  vTaskResume(task_BEND_swipeBrightness);
-   /////////--Starting Screen--/////////////
-   vTaskResume(task_FEND_home);
+  /////////--Suspend all unwanted tasks--////////
+  //vTaskSuspend(<tast>);
   for(;;){
     ////////--Screen Change Management--//////////   
   }
@@ -129,12 +123,6 @@ void setup() {
 
 
 void loop() {
-  if(task_TaskManager!=NULL)
-  {
-      delay(1000);
-      vTaskResume(task_TaskManager);
-      vTaskSuspendAll();
-  }
   
 //vTaskDelete(<tast>);
 //vTaskSuspend(<tast>);
