@@ -1,6 +1,7 @@
 void BEND_swipeBrightness(void *parameters)
 {
   for(;;){
+    delay(1);
     if(drag && touchY < 50){
       if(touchX<10)
       BOOT_setBrightness(7);
@@ -19,11 +20,13 @@ void BEND_idleTimeTracker(void *parameters){
       previousMillis=millis();
       idleTimeTracker+=1;
     }
+    delay(1);
   }
 }
 
 void BEND_systemMonitoring(void *parameters){
   for(;;){
+    delay(1);
     SYS_getBatteryLevel();
     SYS_getRemainingTime();
     SYS_savePower();
@@ -58,6 +61,7 @@ void BEND_touchDetection(void *parameters){
     int16_t x, y;
     dragStart = false;
     dragEnd   = false;
+    delay(1);
     if (ttgo->getTouch(x, y)) {
        touchX=x;
        touchY=y;
@@ -107,6 +111,7 @@ void BEND_touchDetection(void *parameters){
 
 void BEND_powerButtonInterrupt(void *parameters){
   for(;;){
+    delay(1);
       if(irq)
     {
         idleTimeTracker=0;

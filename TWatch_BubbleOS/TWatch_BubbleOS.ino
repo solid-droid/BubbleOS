@@ -73,21 +73,19 @@ TTGOClass *ttgo;
 
 void TaskManager(void *parameters)
 {
+  delay(1);
   /////////--Suspend all unwanted tasks--////////
   //vTaskSuspend(<tast>);
-  for(;;){
-    ////////--Screen Change Management--//////////   
-  }
 }
 
 void BeginTaskManager(){
 ///////////---Backend Tasks---//////////////////////////////////
 xTaskCreate( BEND_idleTimeTracker,                          "Idle Time Tracker",
-             1000, NULL, 3, &task_BEND_idleTimeTracker );
+             2000, NULL, 3, &task_BEND_idleTimeTracker );
 xTaskCreate( BEND_systemMonitoring,                         "System Monitoring",
-             1000, NULL, 3, &task_BEND_systemMonitoring );
+             3000, NULL, 3, &task_BEND_systemMonitoring );
 xTaskCreate( BEND_touchDetection,                           "Touch detection",
-             1000, NULL, 3, &task_BEND_touchDetection );
+             2000, NULL, 3, &task_BEND_touchDetection );
 xTaskCreate( BEND_powerButtonInterrupt,                     "Power Button Interrupt",
              1000, NULL, 3, &task_BEND_powerButtonInterrupt);
 xTaskCreate( BEND_swipeBrightness,                          "Brightness Control",
@@ -95,11 +93,11 @@ xTaskCreate( BEND_swipeBrightness,                          "Brightness Control"
 //////////---Frontend Tasks---/////////////////////////////////
 
 xTaskCreate( FEND_home,                                     "Clock + Menus",
-             1000, NULL, 3, &task_FEND_home );
+             2000, NULL, 3, &task_FEND_home );
 
 //////////---Task Manager---//////////////////////////////////
-xTaskCreate( TaskManager,                                   "TaskManager",
-             1000, NULL, 3, &task_TaskManager);
+//xTaskCreate( TaskManager,                                   "TaskManager",
+//             500, NULL, 3, &task_TaskManager);
 }
 
 
@@ -123,7 +121,8 @@ void setup() {
 
 
 void loop() {
-  
+ vTaskDelete(NULL);
+
 //vTaskDelete(<tast>);
 //vTaskSuspend(<tast>);
 //vTaskResume(<task>);
