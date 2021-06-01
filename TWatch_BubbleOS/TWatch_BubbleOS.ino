@@ -14,7 +14,7 @@
 const char * ssid = "SSID1-2.4G";
 const char * password = "12345678";
 String NewFirmwareVer = "";
-String FirmwareVer = "21.06.1";
+String FirmwareVer = {"21.06.2"};
 #define URL_fw_Version "https://raw.githubusercontent.com/solid-droid/BubbleOS/main/Releases/LatestVersion.txt"
 #define URL_fw_Bin "https://github.com/solid-droid/BubbleOS/blob/main/Releases/bubbleOS.bin?raw=true"
 ///////////////---System Variables---//////////////////////////////////////////////////////////
