@@ -5,9 +5,27 @@ bool FEND_home(){
  return false;
 }
 
-bool FEND_showFirmwareVer(){
-  OTA_currentVersion()
-  return true;
+bool showFirmwareVerOnce = false;
+bool FEND_showFirmwareVer(uint8_t x, uint8_t y){
+  if(!showFirmwareVerOnce){
+    showFirmwareVerOnce = true;
+    OTA_currentVersion(3,30);
+  }
+  if(hold){
+    APP_drawText("hold "+String(x)+" "+String(y), 3, 70, 23);
+    if(x>3 && x<APP_getWidth(13) && y<50 && y >14)
+    {
+        APP_drawText("detecting Version...", 3, 70, 23);
+       if(OTA_FirmwareVersionCheck())
+       {
+        APP_drawText("Ver "+NewFirmwareVer+" available", 3, 70, 23);
+       }else
+       {
+         APP_drawText("Firmware upto date.", 3, 70, 23);
+       }
+    }
+  }
+  return false;
 }
 bool FEND_batteryIcon()
 {
@@ -34,6 +52,6 @@ void FEND_begin(int x, int y)
  FEND_task[2] = FEND_menuIcon();
 
  if(!FEND_task[3])
- FEND_task[2] = FEND_showFirmwareVer();
+ FEND_task[2] = FEND_showFirmwareVer(x,y);
 
 }

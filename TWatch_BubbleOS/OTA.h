@@ -1,6 +1,6 @@
-void OTA_currentVersion()
+void OTA_currentVersion(uint8_t x, uint8_t y)
 {
-  APP_drawText("ver: "+ FirmwareVer, 3, 60, 13);
+  APP_drawText("ver: "+ FirmwareVer, x, y, 13);
 }
 
 void OTA_updateFirmware(void)
@@ -69,11 +69,11 @@ bool OTA_FirmwareVersionCheck(void) {
     } 
     else 
     {
+      NewFirmwareVer = payload;
       Serial.println(payload);
       Serial.println("New firmware detected");
       return true;
     }
   } 
   return false;  
-}
 }

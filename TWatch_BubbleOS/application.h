@@ -9,13 +9,17 @@ void APP_digitalClock(){
     ttgo->tft->drawString(String(ttgo->rtc->formatDateTime()), 70, 3);
 }
 
+uint8_t APP_getWidth(uint8_t len, uint8_t fontSize=2){
+  return  len*6*fontSize; 
+}
+
 void APP_drawText(String text, uint8_t x, uint8_t y, uint8_t maxChar = -1, 
                   uint8_t fontSize = 2, uint16_t color = TFT_WHITE, uint16_t background = TFT_BLACK){
   uint8_t h = 7*fontSize;
-  uint8_t w = 5*fontSize;
+  uint8_t w = 6*fontSize;
   uint8_t charCount = text.length();
-  uint8_t rightX = x + (charCount+1)*w-9;
-  uint8_t width = (maxChar-charCount)*w+9; 
+  uint8_t rightX = x + charCount*w;
+  uint8_t width = (maxChar-charCount)*w; 
   if(maxChar > 0) ttgo->tft->fillRect(rightX , y, width , h , background);
   
   ttgo->tft->setTextColor(color, background);
