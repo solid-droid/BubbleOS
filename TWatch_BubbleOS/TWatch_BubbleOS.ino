@@ -5,9 +5,20 @@
 */
 #include "config.h"
 #include <soc/rtc.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <HTTPUpdate.h>
+#include <WiFiClientSecure.h>
+#include "cert.h"
 
+const char * ssid = "SSID1-2.4G";
+const char * password = "12345678";
+String FirmwareVer = "21.06.1";
+#define URL_fw_Version "https://raw.githubusercontent.com/solid-droid/BubbleOS/main/Releases/LatestVersion.txt"
+#define URL_fw_Bin "https://github.com/solid-droid/BubbleOS/blob/main/Releases/bubbleOS.bin?raw=true"
 ///////////////---System Variables---//////////////////////////////////////////////////////////
 char buf[128];
+bool wifiConnected      = false;
 bool irq                = false;
 bool rtcIrq             = false;
 char* SYS_devices[]     = {"display", "gps", "backlight", "touch"};
@@ -44,6 +55,7 @@ TTGOClass *ttgo;
 #include "boot.h"
 #include "system.h"
 #include "application.h"
+#include "OTA.h"
 #include "backend.h"
 #include "frontend.h"
 
@@ -59,11 +71,13 @@ bool touchPointChange(int x, int y){
   }
 }
 void setup() {
+  Serial.begin(115200);
   ttgo = TTGOClass::getWatch();
   ttgo->begin();
   BOOT();
   BOOT_setBrightness(loadBrightness);
-  SYS_getAPPS();
+  BOOT_connectWiFi();
+//SYS_getAPPS();
 //APP_showAppList();
   ttgo->tft->setTextSize(2);
   ////////////////////////////////////////////////////////////////
@@ -76,11 +90,21 @@ void loop() {
     previousMillis=millis();
     idleTimeTracker+=1;
   }
+/////////////--Sensors/Network--////////////////////////////
+
+wifiConnected = WiFi.status() != WL_CONNECTED ? false : true;
+if(wifiConnected){
+  APP_drawText("Wifi Connected ", 3, 150, 15);
+}
+
 /////////////--Power  Saving--//////////////////////////////
+
   SYS_getBatteryLevel();
   SYS_getRemainingTime();
   SYS_savePower();
+  
 ///////////////--Touch Control--/////////////////////////////
+
   int16_t x, y;
   dragStart = false;
   dragEnd   = false;
@@ -126,6 +150,7 @@ void loop() {
     hold  = false;
     drag  = false;
  }
+ 
 /////////////////////--Application--//////////////////////////////////////////
    BEND_begin(x,y);
    FEND_begin(x,y);

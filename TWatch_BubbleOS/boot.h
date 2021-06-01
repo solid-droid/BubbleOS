@@ -66,6 +66,10 @@ void BOOT_powerButton(){
    ttgo->power->setPowerOutPut(AXP202_DCDC2, false);
 }
 
+void BOOT_connectWiFi(){
+  WiFi.begin(ssid, password);
+}
+
 void BOOT_RTC(){
  pinMode(RTC_INT_PIN, INPUT_PULLUP);
     attachInterrupt(RTC_INT_PIN, [] {

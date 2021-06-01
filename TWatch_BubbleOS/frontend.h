@@ -5,6 +5,10 @@ bool FEND_home(){
  return false;
 }
 
+bool FEND_showFirmwareVer(){
+  OTA_currentVersion()
+  return true;
+}
 bool FEND_batteryIcon()
 {
   return true;
@@ -28,5 +32,8 @@ void FEND_begin(int x, int y)
 
  if(!FEND_task[2])
  FEND_task[2] = FEND_menuIcon();
+
+ if(!FEND_task[3])
+ FEND_task[2] = FEND_showFirmwareVer();
 
 }
