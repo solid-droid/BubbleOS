@@ -7,20 +7,16 @@
 #include <soc/rtc.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
-//#include <HTTPUpdate.h>
 #include <WiFiClientSecure.h>
-#include "HttpsOTAUpdate.h"
 #include "cert.h"
 
-static HttpsOTAStatus_t otastatus;
+
 const char * ssid = "SSID1-2.4G";
 const char * password = "12345678";
 
-String NewFirmwareVer = "";
-bool Upgrade = false;
-String FirmwareVer = {"21.06.2"};
+String NewFirmwareVer;
+String FirmwareVer = {"0.0"};
 static const char *version_url = "https://raw.githubusercontent.com/solid-droid/BubbleOS/main/Releases/LatestVersion.txt";
-static const char *firmware_url = "https://github.com/solid-droid/BubbleOS/raw/main/Releases/bubbleOS.bin";
 ///////////////---System Variables---//////////////////////////////////////////////////////////
 char buf[128];
 bool wifiConnected      = false;
@@ -90,17 +86,7 @@ void setup() {
 }
 
 
-void loop() {
-  if(Upgrade){
-    otastatus = HttpsOTA.status();
-    if(otastatus == HTTPS_OTA_SUCCESS) { 
-        Serial.println("Firmware written successfully. To reboot device, call API ESP.restart() or PUSH restart button on device");
-    } else if(otastatus == HTTPS_OTA_FAIL) { 
-        Serial.println("Firmware Upgrade Fail");
-    }
-    delay(1000);
-  }
- 
+void loop() { 
  if(previousMillis+1000<=millis())
   {
     previousMillis=millis();

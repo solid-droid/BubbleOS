@@ -67,14 +67,7 @@ void BOOT_powerButton(){
 }
 
 void BOOT_connectWiFi(){
-    Serial.print("Attempting to connect to SSID: ");
     WiFi.begin(ssid, password);
-
-    // attempt to connect to Wifi network:
-    while (WiFi.status() != WL_CONNECTED) {
-        Serial.print(".");
-        delay(1000);
-    }
 }
 
 void BOOT_RTC(){
