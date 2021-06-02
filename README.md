@@ -7,6 +7,11 @@
 
 
 ## Logs:  
+
+> 02-06-2021
+
+  1. Added FreeRTOS Multitasking
+
 > 01-06-2021 
 
 1. Added Battery remaining ON time calculation based on load current.
