@@ -1,7 +1,6 @@
 void BEND_swipeBrightness(void *parameters)
 {
   for(;;){
-    delay(1);
     if(drag && touchY < 50){
       if(touchX<10)
       BOOT_setBrightness(7);
@@ -10,6 +9,7 @@ void BEND_swipeBrightness(void *parameters)
       else 
       BOOT_setBrightness(255);
     }
+    delay(10);
   }
 }
 
@@ -20,16 +20,16 @@ void BEND_idleTimeTracker(void *parameters){
       previousMillis=millis();
       idleTimeTracker+=1;
     }
-    delay(1);
+    delay(10);
   }
 }
 
 void BEND_systemMonitoring(void *parameters){
   for(;;){
-    delay(1);
     SYS_getBatteryLevel();
     SYS_getRemainingTime();
     SYS_savePower();
+    delay(10);
   }
 }
 
@@ -61,39 +61,42 @@ void BEND_touchDetection(void *parameters){
     int16_t x, y;
     dragStart = false;
     dragEnd   = false;
-    delay(1);
     if (ttgo->getTouch(x, y)) {
        touchX=x;
        touchY=y;
        idleTimeTracker=0;
        if(watchInSleep){
         SYS_wakeup();
+        TouchWakeUp = true;
         BOOT_setBrightness(loadBrightness);
        }
        else {
-        if(!touch)
-         {
-          BOOT_setBrightness(loadBrightness);
-          touchTime = millis();
-          touchPoint[0] = touchX;
-          touchPoint[1] = touchY; 
-          touch = true;
-         } 
-        if(millis()-touchTime>dragThreshold){
-        dragStart = true;
-        if(!BEND_touchPointChange() && !drag)
-        { 
-          hold = true;
+        if(!TouchWakeUp){
+         if(!touch)
+           {
+            BOOT_setBrightness(loadBrightness);
+            touchTime = millis();
+            touchPoint[0] = touchX;
+            touchPoint[1] = touchY; 
+            touch = true;
+           } 
+         if(millis()-touchTime>dragThreshold){
+          dragStart = true;
+          if(!BEND_touchPointChange() && !drag)
+          { 
+            hold = true;
+          }
+          else
+          {
+            drag = true;
+            hold = false;
+          }
         }
-        else
-        {
-          drag = true;
-          hold = false;
-        }
-       }
       }
+     }
     } else {
       tap   = false;
+      TouchWakeUp = false;
       if(drag || hold)
       {
         dragEnd = true;
@@ -106,14 +109,15 @@ void BEND_touchDetection(void *parameters){
       hold  = false;
       drag  = false;
    }
+  delay(10);
   }
 }
 
 void BEND_powerButtonInterrupt(void *parameters){
   for(;;){
-    delay(1);
       if(irq)
     {
+        TouchWakeUp = false;
         idleTimeTracker=0;
         if(BOOT_deviceStatus("backlight")){
           SYS_sleep();}
@@ -123,5 +127,6 @@ void BEND_powerButtonInterrupt(void *parameters){
         vTaskDelay(700/portTICK_PERIOD_MS);
         BOOT_clearIRQ();
     }
+   delay(10);
   }
 }

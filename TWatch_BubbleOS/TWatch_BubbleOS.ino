@@ -3,13 +3,32 @@
  * Created By Nikhil M Jeby
  * Github: https://github.com/solid-droid/Bubble-OS
 */
+#include ".\Assets\Wifi\wifi_0.h"
+#include ".\Assets\Wifi\wifi_1.h"
+#include ".\Assets\Wifi\wifi_2.h"
+#include ".\Assets\Wifi\wifi_3.h"
+#include ".\Assets\Wifi\wifi_4.h"
+
+#include ".\Assets\bubbleMenu\menu_icon.h"
+
+#include ".\Assets\bluetooth\bluetooth_OFF.h"
+#include ".\Assets\bluetooth\bluetooth_ON.h"
+
+#include ".\Assets\battery\battery_0.h"
+#include ".\Assets\battery\battery_1.h"
+#include ".\Assets\battery\battery_2.h"
+#include ".\Assets\battery\battery_3.h"
+#include ".\Assets\battery\battery_4.h"
+
 #include "config.h"
 #include <soc/rtc.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <WiFiClientSecure.h>
 #include "cert.h"
+TTGOClass *ttgo;
 
+TFT_eSPI tft = TFT_eSPI();    
 
 const char * ssid = "SSID1-2.4G";
 const char * password = "12345678";
@@ -41,7 +60,8 @@ bool dragStart          = false;         //Detected drag/hold Start
 bool dragEnd            = false;         //Detected drag/hold Start
 bool hold               = false;         //Detected hold
 uint32_t touchTime      = 0;             //Touch start time millis
-bool watchInSleep       = false;   
+bool watchInSleep       = false; 
+bool TouchWakeUp        = false;  
 
 //////////////--Tunable Variable--////////////////////////////////////////////////////////////////
 int  idleTime0          = 7;             //Maximum allowed idle time (sec) before screen dims (No touch)
@@ -58,46 +78,25 @@ TaskHandle_t task_BEND_systemMonitoring = NULL;
 TaskHandle_t task_BEND_touchDetection = NULL;
 TaskHandle_t task_BEND_powerButtonInterrupt = NULL;
 TaskHandle_t task_BEND_swipeBrightness = NULL;
-//-----------------------------------------------------//////////
-TaskHandle_t task_FEND_home = NULL;
-//----------------------------------------------------///////////
-TaskHandle_t task_TaskManager = NULL;
 /////////////////////////////////////////////////////////////////
-
-TTGOClass *ttgo;
 #include "boot.h"
 #include "system.h"
 #include "application.h"
 #include "backend.h"
 #include "frontend.h"
 
-void TaskManager(void *parameters)
-{
-  delay(1);
-  /////////--Suspend all unwanted tasks--////////
-  //vTaskSuspend(<tast>);
-}
-
 void BeginTaskManager(){
 ///////////---Backend Tasks---//////////////////////////////////
-xTaskCreate( BEND_idleTimeTracker,                          "Idle Time Tracker",
-             2000, NULL, 3, &task_BEND_idleTimeTracker );
-xTaskCreate( BEND_systemMonitoring,                         "System Monitoring",
-             3000, NULL, 3, &task_BEND_systemMonitoring );
-xTaskCreate( BEND_touchDetection,                           "Touch detection",
-             2000, NULL, 3, &task_BEND_touchDetection );
-xTaskCreate( BEND_powerButtonInterrupt,                     "Power Button Interrupt",
+xTaskCreate( BEND_idleTimeTracker,                          "Idle Time",
+             1000, NULL, 3, &task_BEND_idleTimeTracker );
+xTaskCreate( BEND_systemMonitoring,                         "Power Monitor",
+             2000, NULL, 3, &task_BEND_systemMonitoring );
+xTaskCreate( BEND_touchDetection,                           "Touch Detection",
+             1000, NULL, 5, &task_BEND_touchDetection );
+xTaskCreate( BEND_powerButtonInterrupt,                     "Power Button",
              1000, NULL, 3, &task_BEND_powerButtonInterrupt);
-xTaskCreate( BEND_swipeBrightness,                          "Brightness Control",
-             1000, NULL, 3, &task_BEND_swipeBrightness);
-//////////---Frontend Tasks---/////////////////////////////////
-
-xTaskCreate( FEND_home,                                     "Clock + Menus",
-             2000, NULL, 3, &task_FEND_home );
-
-//////////---Task Manager---//////////////////////////////////
-//xTaskCreate( TaskManager,                                   "TaskManager",
-//             500, NULL, 3, &task_TaskManager);
+xTaskCreate( BEND_swipeBrightness,                          "Brightness",
+             1000, NULL, 3, &task_BEND_swipeBrightness);  
 }
 
 
@@ -105,6 +104,7 @@ void setup() {
   Serial.begin(115200);
   ttgo = TTGOClass::getWatch();
   ttgo->begin();
+  ttgo->tft->setSwapBytes(true);
   BOOT();
   BOOT_setBrightness(loadBrightness);
   ttgo->tft->setTextSize(2);
@@ -121,7 +121,13 @@ void setup() {
 
 
 void loop() {
- vTaskDelete(NULL);
+  
+  FEND_clock();
+  FEND_wifi_connected();
+  FEND_bluetooth_ON();
+  FEND_menu_Icon();
+  FEND_battery_Icon();
+  FEND_menu_Icon();
 
 //vTaskDelete(<tast>);
 //vTaskSuspend(<tast>);

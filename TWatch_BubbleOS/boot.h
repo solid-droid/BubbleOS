@@ -53,6 +53,7 @@ void BOOT_init_loadingScreen(){
   byte xpos = 40; // Stating position for the display
   byte ypos = 90;
   ttgo->tft->fillScreen(TFT_BLACK);
+  ttgo->tft->setSwapBytes(true);
   ttgo->tft->setTextSize(2);
   ttgo->tft->setTextColor(0x6E2B, TFT_BLACK);
   ttgo->tft->drawString("Loading...", xpos, ypos);
