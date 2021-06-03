@@ -9,6 +9,8 @@
 #include ".\Assets\Wifi\wifi_3.h"
 #include ".\Assets\Wifi\wifi_4.h"
 
+#include ".\Assets\rotation\wifi_sq.h"
+
 #include ".\Assets\bubbleMenu\menu_icon.h"
 
 #include ".\Assets\bluetooth\bluetooth_OFF.h"
@@ -39,6 +41,7 @@ static const char *version_url = "https://raw.githubusercontent.com/solid-droid/
 
 ///////////////---System Variables---//////////////////////////////////////////////////////////
 char buf[128];
+#define DEG2RAD 0.0174532925
 bool wifiConnected      = false;
 bool irq                = false;
 bool rtcIrq             = false;
@@ -99,7 +102,7 @@ void setup() {
 
 }
 
-
+uint8_t angle =0;
 void loop() {
   
   BEND_idleTimeTracker();
@@ -107,12 +110,15 @@ void loop() {
   BEND_touchDetection();
   BEND_powerButtonInterrupt();
   BEND_swipeBrightness();
+  if(BEND_delay(500,3)){
+    angle+=10;
+    APP_rotateImage(70,70,24,24,wifi_sq,angle);
+  }
   //////////////////////////////////
-  FEND_clock();
-  FEND_wifi_connecting();
+  if(BEND_delay(1000,0)) FEND_clock();
+  if(BEND_delay(300,1))  FEND_wifi_connecting();
   FEND_bluetooth_OFF();
   FEND_menu_Icon();
-  FEND_battery_Icon();
-  FEND_menu_Icon();
+  if(BEND_delay(5000,2)) FEND_battery_Icon();
 
 }

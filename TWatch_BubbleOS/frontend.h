@@ -1,7 +1,5 @@
 void FEND_clock(){
-   if(BEND_delay(1000,0)){
       APP_digitalClock();
-   }
 }
 void FEND_wifi_connected()
 {
@@ -13,7 +11,6 @@ uint8_t FEND_wifi_counter = 0;
 void FEND_wifi_connecting()
 {
   uint8_t x= 190, y = 216, w = 21, h= 22;
-  if(BEND_delay(500,1)){
     if(FEND_wifi_counter == 1) ttgo->tft->pushImage(x, y,  w, h, wifi_0);
     else if(FEND_wifi_counter == 2) ttgo->tft->pushImage(x, y,  w, h, wifi_1);
     else if(FEND_wifi_counter == 3) ttgo->tft->pushImage(x, y,  w, h, wifi_2);
@@ -21,7 +18,6 @@ void FEND_wifi_connecting()
     else if(FEND_wifi_counter == 5) ttgo->tft->pushImage(x, y,  w, h, wifi_4);
     else FEND_wifi_counter = 0;
     FEND_wifi_counter++;;
-  }
 }
 
 void FEND_bluetooth_ON(){

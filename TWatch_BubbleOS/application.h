@@ -25,3 +25,20 @@ void APP_drawText(String text, uint8_t x, uint8_t y, uint8_t maxChar = -1,
   ttgo->tft->setTextColor(color, background);
   ttgo->tft->drawString(text, x, y); 
 }
+
+void APP_rotateImage(uint8_t x,uint8_t y, uint8_t w , uint8_t h, const unsigned short *image , uint16_t angle) {
+
+float  cosa = cos(angle * DEG2RAD), sina = sin(angle * DEG2RAD);
+x = x - ((w * cosa / 2) - (h * sina / 2));
+y = y - ((h * cosa / 2) + (w * sina / 2));
+uint16_t newx, newy;
+uint16_t pixel = 0;
+
+for(int i=0; i< h; ++ i)
+  for(int j=0; j< w; ++ j)
+   {
+    newx = 0.5 + x + ((i * cosa) - (j * sina));
+    newy = 0.5 + y + ((j * cosa) + (i * sina));
+    ttgo->tft->drawPixel(newx, newy, pgm_read_byte(image++));
+   }
+}
