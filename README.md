@@ -7,10 +7,15 @@
 
 
 ## Logs:  
+> 03-06-2021
+
+1. Removed FreeRTOS as its getting complicated with more functions.
+2. Added custom scheduler (replacing FreeRTOS)
+3. Added Battery, Wifi animated, bluetooth and menu icons
 
 > 02-06-2021
 
-  1. Added FreeRTOS Multitasking
+1. Added FreeRTOS Multitasking
 
 > 01-06-2021 
 
