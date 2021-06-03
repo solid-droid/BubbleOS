@@ -1,6 +1,5 @@
-void BEND_swipeBrightness(void *parameters)
+void BEND_swipeBrightness()
 {
-  for(;;){
     if(drag && touchY < 50){
       if(touchX<10)
       BOOT_setBrightness(7);
@@ -9,40 +8,35 @@ void BEND_swipeBrightness(void *parameters)
       else 
       BOOT_setBrightness(255);
     }
-    delay(10);
-  }
+
 }
 
-void BEND_idleTimeTracker(void *parameters){
-  for(;;){
+void BEND_idleTimeTracker(){
+
      if(previousMillis+1000<=millis())
     {
       previousMillis=millis();
       idleTimeTracker+=1;
     }
-    delay(10);
-  }
+
 }
 
-void BEND_systemMonitoring(void *parameters){
-  for(;;){
+void BEND_systemMonitoring(){
+
     SYS_getBatteryLevel();
     SYS_getRemainingTime();
     SYS_savePower();
-    delay(10);
-  }
+
 }
 
-void BEND_maintainWiFi(void *parameters){
-  for(;;){
+void BEND_maintainWiFi(){
+
     wifiConnected = WiFi.status() != WL_CONNECTED ? false : true;
     if(wifiConnected){
       APP_drawText("Wifi Connected", 3, 150, 16);
     }else{
       APP_drawText("Wifi Disconnected", 3, 150, 16);
     }
-    vTaskDelay(10000/portTICK_PERIOD_MS);
-  }
 }
 bool BEND_touchPointChange(){
   
@@ -56,8 +50,7 @@ bool BEND_touchPointChange(){
   }
 }
 
-void BEND_touchDetection(void *parameters){
-  for(;;){
+void BEND_touchDetection(){
     int16_t x, y;
     dragStart = false;
     dragEnd   = false;
@@ -109,12 +102,9 @@ void BEND_touchDetection(void *parameters){
       hold  = false;
       drag  = false;
    }
-  delay(10);
-  }
 }
 
-void BEND_powerButtonInterrupt(void *parameters){
-  for(;;){
+void BEND_powerButtonInterrupt(){
       if(irq)
     {
         TouchWakeUp = false;
@@ -127,6 +117,4 @@ void BEND_powerButtonInterrupt(void *parameters){
         vTaskDelay(700/portTICK_PERIOD_MS);
         BOOT_clearIRQ();
     }
-   delay(10);
-  }
 }

@@ -72,32 +72,12 @@ int  holdThreshold      = 0;             //Allowed movement range in hold mode.
 int  Max_APPS           = 20;            //Max external app count = 20
 String APP_list[20];                     //Max external app count = 20
 uint8_t  loadBrightness = 100;           //Brightness 
-///////////---Task Handlers---//////////////////////////////////
-TaskHandle_t task_BEND_idleTimeTracker = NULL;
-TaskHandle_t task_BEND_systemMonitoring = NULL;
-TaskHandle_t task_BEND_touchDetection = NULL;
-TaskHandle_t task_BEND_powerButtonInterrupt = NULL;
-TaskHandle_t task_BEND_swipeBrightness = NULL;
-/////////////////////////////////////////////////////////////////
+
 #include "boot.h"
 #include "system.h"
 #include "application.h"
 #include "backend.h"
 #include "frontend.h"
-
-void BeginTaskManager(){
-///////////---Backend Tasks---//////////////////////////////////
-xTaskCreate( BEND_idleTimeTracker,                          "Idle Time",
-             1000, NULL, 3, &task_BEND_idleTimeTracker );
-xTaskCreate( BEND_systemMonitoring,                         "Power Monitor",
-             2000, NULL, 3, &task_BEND_systemMonitoring );
-xTaskCreate( BEND_touchDetection,                           "Touch Detection",
-             1000, NULL, 5, &task_BEND_touchDetection );
-xTaskCreate( BEND_powerButtonInterrupt,                     "Power Button",
-             1000, NULL, 3, &task_BEND_powerButtonInterrupt);
-xTaskCreate( BEND_swipeBrightness,                          "Brightness",
-             1000, NULL, 3, &task_BEND_swipeBrightness);  
-}
 
 
 void setup() {
@@ -109,7 +89,6 @@ void setup() {
   BOOT_setBrightness(loadBrightness);
   ttgo->tft->setTextSize(2);
   previousMillis = millis();
-  BeginTaskManager();
 
 /////////////////////////////////////////////////
 //BOOT_connectWiFi();
@@ -122,6 +101,13 @@ void setup() {
 
 void loop() {
   
+  BEND_idleTimeTracker();
+  BEND_systemMonitoring();
+  BEND_touchDetection();
+  BEND_powerButtonInterrupt();
+  BEND_swipeBrightness();
+  
+  //////////////////////////////////
   FEND_clock();
   FEND_wifi_connected();
   FEND_bluetooth_ON();
@@ -129,8 +115,4 @@ void loop() {
   FEND_battery_Icon();
   FEND_menu_Icon();
 
-//vTaskDelete(<tast>);
-//vTaskSuspend(<tast>);
-//vTaskResume(<task>);
-//xTaskResumeAll();
 }
