@@ -69,8 +69,9 @@ int  idleTime1          = 15;            //Maximum allowed idle time (sec) befor
 int  idleTime2          = 120;           //Maximum allowed idle time (sec) before shutDown
 int  dragThreshold      = 500;           //Threshold millis to treat tap as drag/hold.
 int  holdThreshold      = 0;             //Allowed movement range in hold mode.
-int  Max_APPS           = 20;            //Max external app count = 20
-String APP_list[20];                     //Max external app count = 20
+int  Max_APPS           = 20;            //Max external app count
+String APP_list[20];                     //Max external app count
+uint32_t  BEND_delay_register[20]={};    //Max number of async delay calls
 uint8_t  loadBrightness = 100;           //Brightness 
 
 #include "boot.h"
@@ -106,11 +107,10 @@ void loop() {
   BEND_touchDetection();
   BEND_powerButtonInterrupt();
   BEND_swipeBrightness();
-  
   //////////////////////////////////
   FEND_clock();
-  FEND_wifi_connected();
-  FEND_bluetooth_ON();
+  FEND_wifi_connecting();
+  FEND_bluetooth_OFF();
   FEND_menu_Icon();
   FEND_battery_Icon();
   FEND_menu_Icon();

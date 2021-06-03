@@ -118,3 +118,18 @@ void BEND_powerButtonInterrupt(){
         BOOT_clearIRQ();
     }
 }
+
+
+bool BEND_delay(int value ,int index){
+ if(!BEND_delay_register[index]){
+    BEND_delay_register[index] = millis();
+    return false;
+  }else{
+    if(BEND_delay_register[index]+value>=millis()) {
+      return false;
+    } else {
+      BEND_delay_register[index]=0;
+      return true;
+    }
+  }  
+}
