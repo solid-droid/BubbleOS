@@ -1,5 +1,3 @@
-> UI Design (Not implemented yet)  
-
 > File Structure  
 
 ![file_struct_watch (2)](https://user-images.githubusercontent.com/32586986/120196580-a3183b80-c23d-11eb-99d6-1febd3c8f595.png)
