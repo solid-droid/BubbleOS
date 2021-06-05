@@ -133,3 +133,37 @@ bool BEND_delay(int value ,int index){
     }
   }  
 }
+
+bool BEND_checkTap(uint8_t *pos){
+  if(touchX>=pos[0] && touchX<=pos[1] && touchY>=pos[2] && touchY<=pos[3])
+  return true;
+  else return false;
+}
+
+bool BEND_updateScreen(){
+uint8_t battery[4]={0,50,0,50}, menu[4]={0,50,200,240} , network[4]={190, 240 ,190, 240}, gps[4]={200, 240, 0 ,  50};
+if(tap){
+  uint8_t prev = currentScreen;
+  bool refresh = false;
+    if(BEND_checkTap(menu)){
+      refresh = true;
+      currentScreen     = 4;
+    }
+    if(BEND_checkTap(network)){
+      refresh = true;
+      currentScreen     = 1;
+    }
+    if(BEND_checkTap(battery)){
+      refresh = true;
+      currentScreen     = 2;
+    }
+    if(BEND_checkTap(gps)){
+      refresh = true;
+      currentScreen     = 3;
+    }
+    if(prev == currentScreen && refresh) currentScreen  = 0;
+    return refresh;
+   
+}
+return false;
+}

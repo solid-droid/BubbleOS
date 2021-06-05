@@ -58,17 +58,18 @@ int  idleTimeTracker    = 0;
 uint32_t previousMillis;
 bool touch              = false;         //Detected touch
 int  touchPoint[2]      = {0,0};         //Touch start point
-uint16_t touchX          = 0;            //Current touch x
-uint16_t touchY          = 0;            //Current touch y
+uint8_t touchX          = 0;            //Current touch x
+uint8_t touchY          = 0;            //Current touch y
 bool tap                = false;         //Detected tap
 bool drag               = false;         //Detected drag
 bool dragStart          = false;         //Detected drag/hold Start
 bool dragEnd            = false;         //Detected drag/hold Start
 bool hold               = false;         //Detected hold
 uint32_t touchTime      = 0;             //Touch start time millis
-bool watchInSleep       = false; 
-bool TouchWakeUp        = false;  
-uint8_t FEND_hour =0, FEND_minutes=0;
+bool watchInSleep       = false;         //Watch Screen OFF
+bool TouchWakeUp        = false;         //Wakeup by touch.
+uint8_t FEND_hour =0, FEND_minutes=0;    //Previous Hour and Minutes
+uint8_t currentScreen   = 0;             //Tracks screen
 
 //////////////--Tunable Variable--////////////////////////////////////////////////////////////////
 int  idleTime0          = 7;             //Maximum allowed idle time (sec) before screen dims (No touch)
@@ -102,9 +103,7 @@ void setup() {
   FEND_minutes = currentTime.minute;
   APP_drawClockCenter();
   FEND_clock();
-  FEND_bluetooth_OFF();
-  FEND_menu_Icon();
-  FEND_battery_Icon();
+  FEND_loadIcons();
 /////////////////////////////////////////////////
 //BOOT_connectWiFi();
 //SYS_getAPPS();
@@ -122,8 +121,32 @@ void loop() {
   BEND_powerButtonInterrupt();
   BEND_swipeBrightness();
   //////////////////////////////////
-  if(BEND_delay(1000,0)) FEND_clock();
-  if(BEND_delay(300,1))  FEND_wifi_connecting();
-  if(BEND_delay(5000,2)) FEND_battery_Icon();
+ if(BEND_delay(300,0))  FEND_wifi_connecting();
+ if(BEND_delay(5000,1)) FEND_battery_Icon();
+ if(BEND_updateScreen()){
+  ttgo->tft->fillScreen(TFT_BLACK);
+  FEND_loadIcons();
+ }
+  switch(currentScreen)
+  {
+    case 0 : //Clock screen - home
+      if(BEND_delay(1000,2)) FEND_clock(); 
+      break;
+    case 1 : //Network Menu 
+      FEND_network();
+      break;
+    case 2 : //battery Menu 
+      FEND_power();
+      break;
+    case 3 : //GPS / Alarm Menu
+      FEND_nav_alarm();
+      break;
+    case 4 : //App Menu - bubble menu
+      FEND_bubbleMenu();
+      break;
+    case 5 : //Set Time by swiping down
+      FEND_setTimeMenu();
+      break;
+  }
 
 }

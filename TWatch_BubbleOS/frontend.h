@@ -50,3 +50,30 @@ void FEND_menu_Icon(){
   uint8_t x=0, y =186, w = 63, h= 51;
   ttgo->tft->pushImage(x, y,  w, h, menu_icon);
 }
+
+void FEND_network(){
+
+}
+
+void FEND_power(){
+
+}
+
+void FEND_nav_alarm(){
+
+}
+
+void FEND_bubbleMenu(){
+
+}
+
+void FEND_setTimeMenu(){
+
+}
+
+void FEND_loadIcons(){
+  FEND_bluetooth_OFF();
+  FEND_wifi_connected();
+  FEND_menu_Icon();
+  FEND_battery_Icon();
+}
