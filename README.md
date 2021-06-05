@@ -1,10 +1,8 @@
 > UI Design (Not implemented yet)  
 
-![Bubble OS design](https://user-images.githubusercontent.com/32586986/120096651-5273e600-c14a-11eb-86ec-2ac5abeb7cb9.png)
 > File Structure  
 
 ![file_struct_watch (2)](https://user-images.githubusercontent.com/32586986/120196580-a3183b80-c23d-11eb-99d6-1febd3c8f595.png)
-
 
 ## Logs:  
 > 05-06-2021
