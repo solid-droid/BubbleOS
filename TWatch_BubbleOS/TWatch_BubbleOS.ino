@@ -102,6 +102,9 @@ void setup() {
   FEND_minutes = currentTime.minute;
   APP_drawClockCenter();
   FEND_clock();
+  FEND_bluetooth_OFF();
+  FEND_menu_Icon();
+  FEND_battery_Icon();
 /////////////////////////////////////////////////
 //BOOT_connectWiFi();
 //SYS_getAPPS();
@@ -121,8 +124,6 @@ void loop() {
   //////////////////////////////////
   if(BEND_delay(1000,0)) FEND_clock();
   if(BEND_delay(300,1))  FEND_wifi_connecting();
-  FEND_bluetooth_OFF();
-  FEND_menu_Icon();
   if(BEND_delay(5000,2)) FEND_battery_Icon();
 
 }
