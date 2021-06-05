@@ -7,6 +7,10 @@
 
 
 ## Logs:  
+> 05-06-2021
+
+1. Added Analog Clock
+
 > 04-06-2021
 
 1. Added image rotation.
