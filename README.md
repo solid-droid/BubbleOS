@@ -13,6 +13,7 @@ Smart Watch OS for lilygo T-Watch 2020 v2
 > 05-06-2021
 
 1. Added Analog Clock
+2. Image support for minute, second and hour needle. 
 
 > 04-06-2021
 
