@@ -9,7 +9,10 @@
 #include ".\Assets\Wifi\wifi_3.h"
 #include ".\Assets\Wifi\wifi_4.h"
 
-#include ".\Assets\rotation\wifi_sq.h"
+#include ".\Assets\WatchFace\AnalogBasic\center.h"
+#include ".\Assets\WatchFace\AnalogBasic\needle_hour.h"
+#include ".\Assets\WatchFace\AnalogBasic\needle_minutes.h"
+#include ".\Assets\WatchFace\AnalogBasic\needle_seconds.h"
 
 #include ".\Assets\bubbleMenu\menu_icon.h"
 
@@ -65,6 +68,7 @@ bool hold               = false;         //Detected hold
 uint32_t touchTime      = 0;             //Touch start time millis
 bool watchInSleep       = false; 
 bool TouchWakeUp        = false;  
+uint8_t FEND_hour =0, FEND_minutes=0;
 
 //////////////--Tunable Variable--////////////////////////////////////////////////////////////////
 int  idleTime0          = 7;             //Maximum allowed idle time (sec) before screen dims (No touch)
@@ -93,7 +97,11 @@ void setup() {
   BOOT_setBrightness(loadBrightness);
   ttgo->tft->setTextSize(2);
   previousMillis = millis();
-
+  RTC_Date currentTime = ttgo->rtc->getDateTime();
+  FEND_hour = currentTime.hour;
+  FEND_minutes = currentTime.minute;
+  APP_drawClockCenter();
+  FEND_clock();
 /////////////////////////////////////////////////
 //BOOT_connectWiFi();
 //SYS_getAPPS();
@@ -102,7 +110,7 @@ void setup() {
 
 }
 
-uint8_t angle =0;
+int16_t angle =0;
 void loop() {
   
   BEND_idleTimeTracker();
@@ -110,10 +118,6 @@ void loop() {
   BEND_touchDetection();
   BEND_powerButtonInterrupt();
   BEND_swipeBrightness();
-  if(BEND_delay(500,3)){
-    angle+=10;
-    APP_rotateImage(70,70,24,24,wifi_sq,angle);
-  }
   //////////////////////////////////
   if(BEND_delay(1000,0)) FEND_clock();
   if(BEND_delay(300,1))  FEND_wifi_connecting();

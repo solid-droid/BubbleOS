@@ -1,3 +1,33 @@
+void APP_rotateImage(uint8_t x,uint8_t y, uint8_t w , uint8_t h, const unsigned short *image , uint16_t angle) {
+float  cosa = cos(angle * DEG2RAD), sina = sin(angle * DEG2RAD);
+uint8_t newx, newy;
+uint8_t Woffset = w/2;
+for(int i=0, index=0; i< h; ++ i)
+  for(int j=0; j< w; ++ j)
+   {
+    newx = x + i*cosa  - (j-Woffset)*sina;
+    newy = y + (j-Woffset)*cosa  +  i*sina;
+    ttgo->tft->drawPixel(newx, newy, image[index++]);
+   }
+}
+
+void APP_clearRotatedImage(uint8_t x,uint8_t y, uint8_t w , uint8_t h, uint16_t angle,uint16_t background = TFT_BLACK ) {
+float  cosa = cos(angle * DEG2RAD), sina = sin(angle * DEG2RAD);
+uint16_t newx, newy;
+uint8_t Woffset = w/2;
+for(int i=0; i< h; ++ i)
+  for(int j=0; j< w; ++ j)
+   {
+    newx = x + i*cosa  - (j-Woffset)*sina;
+    newy = y + (j-Woffset)*cosa  +  i*sina;
+    ttgo->tft->drawPixel(newx, newy, background);
+   }
+}
+//////////////////////////////////////////////////////////////////////////////
+void APP_drawClockCenter(){
+  ttgo->tft->fillCircle(116, 120, 20, TFT_ORANGE );
+}
+
 void APP_showAppList(){
   ttgo->tft->setTextSize(1);
   for(int i=0; i < APP_count; ++i)
@@ -7,6 +37,31 @@ void APP_showAppList(){
 void APP_digitalClock(){
     ttgo->tft->setTextSize(2);
     ttgo->tft->drawString(String(ttgo->rtc->formatDateTime()), 70, 3);
+}
+
+uint16_t prevSecond =0;
+void APP_drawSecondsNeedle(uint8_t seconds){
+  APP_clearRotatedImage(116,120,20,95, 6* (prevSecond-15<0?prevSecond+45:prevSecond-15));
+  APP_rotateImage(116,120,20,95,needle_seconds, 6*(seconds-15<0?seconds+45:seconds-15));
+  prevSecond = seconds;
+}
+
+void APP_drawHourNeedle(uint8_t hour){
+    hour = hour>12?hour-12:hour;
+   if(hour > FEND_hour || hour == 0 ) {
+      APP_clearRotatedImage(116,120,20,95, 30*(FEND_hour-3<0? FEND_hour+9: FEND_hour-3));
+      FEND_hour = hour;
+    }
+    APP_rotateImage(116,120,20,95,needle_hour, 30*(hour-3<0? hour+9: hour-3));
+}
+
+void APP_drawMinutesNeedle(uint8_t minutes){
+    if(minutes > FEND_minutes || minutes==0){
+      APP_clearRotatedImage(116,120,20,95,6*(FEND_minutes-15<0?FEND_minutes+45:FEND_minutes-15));
+      FEND_minutes = minutes;  
+    }
+    APP_rotateImage(116,120,20,95,needle_minutes,6*(minutes-15<0?minutes+45:minutes-15));
+    
 }
 
 uint8_t APP_getWidth(uint8_t len, uint8_t fontSize=2){
@@ -24,21 +79,4 @@ void APP_drawText(String text, uint8_t x, uint8_t y, uint8_t maxChar = -1,
   
   ttgo->tft->setTextColor(color, background);
   ttgo->tft->drawString(text, x, y); 
-}
-
-void APP_rotateImage(uint8_t x,uint8_t y, uint8_t w , uint8_t h, const unsigned short *image , uint16_t angle) {
-
-float  cosa = cos(angle * DEG2RAD), sina = sin(angle * DEG2RAD);
-x = x - ((w * cosa / 2) - (h * sina / 2));
-y = y - ((h * cosa / 2) + (w * sina / 2));
-uint16_t newx, newy;
-uint16_t pixel = 0;
-
-for(int i=0; i< h; ++ i)
-  for(int j=0; j< w; ++ j)
-   {
-    newx = 0.5 + x + ((i * cosa) - (j * sina));
-    newy = 0.5 + y + ((j * cosa) + (i * sina));
-    ttgo->tft->drawPixel(newx, newy, pgm_read_byte(image++));
-   }
 }

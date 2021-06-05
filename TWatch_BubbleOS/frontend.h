@@ -1,6 +1,13 @@
 void FEND_clock(){
-      APP_digitalClock();
+    APP_digitalClock();
+    RTC_Date currentTime = ttgo->rtc->getDateTime();
+    APP_drawHourNeedle(currentTime.hour);
+    APP_drawMinutesNeedle(currentTime.minute);
+    APP_drawSecondsNeedle(currentTime.second);
+    APP_drawClockCenter();
+    
 }
+
 void FEND_wifi_connected()
 {
   uint8_t x= 190, y = 216, w = 21, h= 22;
