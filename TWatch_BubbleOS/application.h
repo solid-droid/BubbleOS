@@ -57,7 +57,7 @@ void APP_drawHourNeedle(uint8_t hour){
 
 void APP_drawMinutesNeedle(uint8_t minutes){
     if(minutes > FEND_minutes || minutes==0){
-      APP_clearRotatedImage(120,120,20,75,6*(FEND_minutes-15<0?FEND_minutes+45:FEND_minutes-15),25);
+      APP_clearRotatedImage(120,120,20,76,6*(FEND_minutes-15<0?FEND_minutes+45:FEND_minutes-15),25);
       FEND_minutes = minutes;  
     }
     APP_rotateImage(120,120,20,76,needle_minutes,6*(minutes-15<0?minutes+45:minutes-15),25);
