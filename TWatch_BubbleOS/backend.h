@@ -1,6 +1,6 @@
 void BEND_swipeBrightness()
 {
-    if(drag && touchY < 50){
+    if(drag && touchY < 50 && touchPoint[1] < 50){
       if(touchX<10)
       BOOT_setBrightness(7);
       else if (touchX < 200)

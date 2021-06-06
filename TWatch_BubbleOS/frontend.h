@@ -74,32 +74,53 @@ void FEND_alarm_OFF(){
 void FEND_network(){
  if(screenLoad)
  {
-    APP_button("Storage", 0 , 50);
-    APP_button("WiFi", 0 , 100);
-    APP_button("Bluetooth", 0 , 150);
+    currentMenuIndex =1;
+    scrollMenuList[0] = "Update";
+    scrollMenuList[1] = "Bluetooth";
+    scrollMenuList[2] = "WiFi";
+    scrollMenuList[3] = "";
+    APP_scrollMenu();
+ }
+  if(touch){
+   if(BEND_delay(500,3)) APP_updateScrollMenu(); 
  }
 }
 
 void FEND_power(){
  if(screenLoad)
  {
-    APP_button("Modes", 0 , 50);
-    APP_button("Status", 0 , 100);
-    APP_button("Sleep", 0 , 150);
+    currentMenuIndex =1;
+    scrollMenuList[0] = "Modes";
+    scrollMenuList[1] = "Status";
+    scrollMenuList[2] = "Sleep";
+    scrollMenuList[3] = "";
+    APP_scrollMenu();
+ }
+  if(touch){
+   if(BEND_delay(500,3)) APP_updateScrollMenu(); 
  }
 }
 
 void FEND_nav_alarm(){
  if(screenLoad)
  {
-    APP_button("GPS", 0 , 50);
-    APP_button("Time", 0 , 100);
-    APP_button("Alarm", 0 , 150);
+    currentMenuIndex =1;
+    scrollMenuList[0] = "GPS";
+    scrollMenuList[1] = "Time";
+    scrollMenuList[2] = "Alarm";
+    scrollMenuList[3] = "TT1";
+    scrollMenuList[4] = "T201";
+    scrollMenuList[5] = "";
+    APP_scrollMenu();
+ }
+
+ if(touch){
+     if(BEND_delay(500,3)) APP_updateScrollMenu(); 
  }
 }
 
 void FEND_bubbleMenu(){
-//  if(BEND_delay(1000,3))APP_digitalClock();
+//  if(BEND_delay(1000,4))APP_digitalClock();
    if(screenLoad)
  {
     ttgo->tft->drawCircle(120,120,110, TFT_WHITE);

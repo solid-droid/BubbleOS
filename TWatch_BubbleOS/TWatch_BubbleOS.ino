@@ -63,9 +63,9 @@ File SYS_SD;
 int  idleTimeTracker    = 0;
 uint32_t previousMillis;
 bool touch              = false;         //Detected touch
-int  touchPoint[2]      = {0,0};         //Touch start point
-uint8_t touchX          = 0;            //Current touch x
-uint8_t touchY          = 0;            //Current touch y
+uint8_t touchPoint[2]   = {0,0};         //Touch start point
+uint8_t touchX          = 0;             //Current touch x
+uint8_t touchY          = 0;             //Current touch y
 bool tap                = false;         //Detected tap
 bool drag               = false;         //Detected drag
 bool dragStart          = false;         //Detected drag/hold Start
@@ -76,7 +76,9 @@ bool watchInSleep       = false;         //Watch Screen OFF
 bool TouchWakeUp        = false;         //Wakeup by touch.
 uint8_t FEND_hour =0, FEND_minutes=0;    //Previous Hour and Minutes
 uint8_t currentScreen   = 0;             //Tracks screen
-bool    screenLoad   = false;         //For initial loading of screens
+bool    screenLoad      = false;         //For initial loading of screens
+uint8_t currentMenuIndex =0;             //For Scroll Menu
+String  scrollMenuList[10];              //Menu List
 
 //////////////--Tunable Variable--////////////////////////////////////////////////////////////////
 int  idleTime0          = 7;             //Maximum allowed idle time (sec) before screen dims (No touch)
