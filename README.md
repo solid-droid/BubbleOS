@@ -15,6 +15,7 @@ Smart Watch OS for lilygo T-Watch 2020 v2
 1. Added basic Menu Navigation
 2. Added Veritical + Horizonal align center logic for text.
 3. Added Basic Button Widget UI
+4. Added Scrollable Menu
 
 > 05-06-2021
 
