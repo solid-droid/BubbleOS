@@ -80,3 +80,15 @@ void APP_drawText(String text, uint8_t x, uint8_t y, uint8_t maxChar = -1,
   ttgo->tft->setTextColor(color, background);
   ttgo->tft->drawString(text, x, y); 
 }
+
+void APP_drawTextCenter(String text, uint8_t x=0, uint8_t y=100, uint8_t w=240 , uint8_t fontSize = 2){
+
+   uint8_t newX = x + w/2 - (text.length()*6*fontSize)/2;
+   ttgo->tft->drawString(text, newX, y); 
+}
+
+/////////////////////////Widgets/////////////////////////////////////
+void APP_button(String text, uint8_t x=0, uint8_t y=100){
+  APP_drawTextCenter(text, x , y+2);
+  ttgo->tft->drawRoundRect(50, y -10 , 140 , 40, 5 , TFT_WHITE);
+}

@@ -141,7 +141,7 @@ bool BEND_checkTap(uint8_t *pos){
 }
 
 bool BEND_updateScreen(){
-uint8_t battery[4]={0,50,0,50}, menu[4]={0,50,200,240} , network[4]={190, 240 ,190, 240}, gps[4]={200, 240, 0 ,  50};
+uint8_t battery[4]={0,50,0,50}, menu[4]={0,50,200,240} , network[4]={190, 240 ,190, 240}, gps[4]={190, 240, 0 ,  60};
 if(tap){
   uint8_t prev = currentScreen;
   bool refresh = false;

@@ -16,6 +16,12 @@
 
 #include ".\Assets\bubbleMenu\menu_icon.h"
 
+#include ".\Assets\alarm\alarm_OFF.h"
+#include ".\Assets\alarm\alarm_ON.h"
+
+#include ".\Assets\gps\gps_OFF.h"
+#include ".\Assets\gps\gps_ON.h"
+
 #include ".\Assets\bluetooth\bluetooth_OFF.h"
 #include ".\Assets\bluetooth\bluetooth_ON.h"
 
@@ -70,6 +76,7 @@ bool watchInSleep       = false;         //Watch Screen OFF
 bool TouchWakeUp        = false;         //Wakeup by touch.
 uint8_t FEND_hour =0, FEND_minutes=0;    //Previous Hour and Minutes
 uint8_t currentScreen   = 0;             //Tracks screen
+bool    screenLoad   = false;         //For initial loading of screens
 
 //////////////--Tunable Variable--////////////////////////////////////////////////////////////////
 int  idleTime0          = 7;             //Maximum allowed idle time (sec) before screen dims (No touch)
@@ -126,7 +133,10 @@ void loop() {
  if(BEND_updateScreen()){
   ttgo->tft->fillScreen(TFT_BLACK);
   FEND_loadIcons();
+  screenLoad = true;
  }
+ else screenLoad = false;
+ 
   switch(currentScreen)
   {
     case 0 : //Clock screen - home

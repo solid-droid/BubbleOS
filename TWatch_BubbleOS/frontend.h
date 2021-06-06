@@ -1,5 +1,5 @@
 void FEND_clock(){
-    APP_digitalClock();
+//    APP_digitalClock();
     RTC_Date currentTime = ttgo->rtc->getDateTime();
     APP_drawHourNeedle(currentTime.hour);
     APP_drawMinutesNeedle(currentTime.minute);
@@ -51,20 +51,59 @@ void FEND_menu_Icon(){
   ttgo->tft->pushImage(x, y,  w, h, menu_icon);
 }
 
-void FEND_network(){
+void FEND_GPS_ON(){
+  uint8_t x=190, y =5, w = 22, h= 23;
+  ttgo->tft->pushImage(x, y,  w, h, gps_ON);
+}
 
+void FEND_GPS_OFF(){
+  uint8_t x=190, y =5, w = 22, h= 23;
+  ttgo->tft->pushImage(x, y,  w, h, gps_OFF);
+}
+
+void FEND_alarm_ON(){
+  uint8_t x=203, y =24, w = 35, h= 34;
+  ttgo->tft->pushImage(x, y,  w, h, alarm_ON);
+}
+
+void FEND_alarm_OFF(){
+  uint8_t x=203, y =24, w = 35, h= 34;
+  ttgo->tft->pushImage(x, y,  w, h, alarm_OFF);
+}
+
+void FEND_network(){
+ if(screenLoad)
+ {
+    APP_button("Storage", 0 , 50);
+    APP_button("WiFi", 0 , 100);
+    APP_button("Bluetooth", 0 , 150);
+ }
 }
 
 void FEND_power(){
-
+ if(screenLoad)
+ {
+    APP_button("Modes", 0 , 50);
+    APP_button("Status", 0 , 100);
+    APP_button("Sleep", 0 , 150);
+ }
 }
 
 void FEND_nav_alarm(){
-
+ if(screenLoad)
+ {
+    APP_button("GPS", 0 , 50);
+    APP_button("Time", 0 , 100);
+    APP_button("Alarm", 0 , 150);
+ }
 }
 
 void FEND_bubbleMenu(){
-
+//  if(BEND_delay(1000,3))APP_digitalClock();
+   if(screenLoad)
+ {
+    ttgo->tft->drawCircle(120,120,110, TFT_WHITE);
+ }
 }
 
 void FEND_setTimeMenu(){
@@ -76,4 +115,6 @@ void FEND_loadIcons(){
   FEND_wifi_connected();
   FEND_menu_Icon();
   FEND_battery_Icon();
+  FEND_GPS_OFF();
+  FEND_alarm_OFF();
 }
