@@ -17,7 +17,7 @@ void FEND_SB_drawButton(String text, uint8_t posY)
  else if(posY==3) y=210;
  
  ttgo->tft->setTextColor(TFT_WHITE);
- ttgo->tft->fillRoundRect(103 - textSize/2, y-17, textSize+25 , 7*fontSize+25 , 10 , 0x0394);
+ ttgo->tft->fillRoundRect(103 - textSize/2, y-17, textSize+25 , 7*fontSize+25 , 5 , 0x0394);
  APP_drawTextCenter(text, 0 , y-3, fontSize);
  ttgo->tft->drawRoundRect(100 - textSize/2, y-20 , textSize+30 , 7*fontSize+30 , 10 , TFT_WHITE);
 }
