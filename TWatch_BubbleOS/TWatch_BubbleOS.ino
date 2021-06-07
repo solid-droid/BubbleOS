@@ -33,6 +33,7 @@
 
 #include "config.h"
 #include <soc/rtc.h>
+#include <ArduinoJson.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <WiFiClientSecure.h>
@@ -79,6 +80,9 @@ uint8_t currentScreen   = 0;             //Tracks screen
 bool    screenLoad      = false;         //For initial loading of screens
 uint8_t currentMenuIndex =0;             //For Scroll Menu
 String  scrollMenuList[10];              //Menu List
+bool clearScreen         = false;        //Enable to clear screen.
+String screenData        = "";           //Variable to store JSON configuration for custom screens 
+StaticJsonDocument<2000> screenJSON;            //Updates screen based on screenData value.
 
 //////////////--Tunable Variable--////////////////////////////////////////////////////////////////
 int  idleTime0          = 7;             //Maximum allowed idle time (sec) before screen dims (No touch)
@@ -95,11 +99,14 @@ uint8_t  loadBrightness = 100;           //Brightness
 #include "system.h"
 #include "application.h"
 #include "backend.h"
+void FEND_loadIcons();
+#include "screenBuilder.h"
 #include "frontend.h"
 
 
 void setup() {
   Serial.begin(115200);
+ 
   ttgo = TTGOClass::getWatch();
   ttgo->begin();
   ttgo->tft->setSwapBytes(true);
@@ -132,10 +139,11 @@ void loop() {
   //////////////////////////////////
  if(BEND_delay(300,0))  FEND_wifi_connecting();
  if(BEND_delay(5000,1)) FEND_battery_Icon();
- if(BEND_updateScreen()){
+ if(BEND_updateScreen() || clearScreen){
   ttgo->tft->fillScreen(TFT_BLACK);
   FEND_loadIcons();
   screenLoad = true;
+  clearScreen = false;
  }
  else screenLoad = false;
  
@@ -156,8 +164,8 @@ void loop() {
     case 4 : //App Menu - bubble menu
       FEND_bubbleMenu();
       break;
-    case 5 : //Set Time by swiping down
-      FEND_setTimeMenu();
+    case 5 : 
+      FEND_screenBuilder();
       break;
   }
 

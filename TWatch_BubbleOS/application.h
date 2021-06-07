@@ -84,13 +84,8 @@ void APP_drawText(String text, uint8_t x, uint8_t y, uint8_t maxChar = -1,
 void APP_drawTextCenter(String text, uint8_t x=0, uint8_t y=100, uint8_t fontSize = 2, uint8_t w=240){
 
    uint8_t newX = x + w/2 - (text.length()*6*fontSize)/2;
+   ttgo->tft->setTextSize(fontSize);
    ttgo->tft->drawString(text, newX, y); 
-}
-
-/////////////////////////Widgets/////////////////////////////////////
-void APP_button(String text, uint8_t x=0, uint8_t y=100){
-  APP_drawTextCenter(text, x , y+2);
-  ttgo->tft->drawRoundRect(50, y -10 , 140 , 40, 5 , TFT_WHITE);
 }
 
 void APP_scrollMenu(){
@@ -103,16 +98,13 @@ void APP_scrollMenu(){
 ////////////////////
  if(currentMenuIndex!=0){ 
     ttgo->tft->setTextColor(TFT_DARKGREY , TFT_BLACK);
-    ttgo->tft->setTextSize(2);
     APP_drawTextCenter(scrollMenuList[currentMenuIndex-1], 0 , 40, 2);
  }
     ttgo->tft->setTextColor(TFT_WHITE, TFT_BLACK);
-    ttgo->tft->setTextSize(4);
     APP_drawTextCenter(scrollMenuList[currentMenuIndex], 0 , 100, 4);
     ttgo->tft->drawRoundRect(5, 85 , 225 , 60, 20 , TFT_WHITE);
 ///////////////////
     ttgo->tft->setTextColor(TFT_DARKGREY , TFT_BLACK);
-    ttgo->tft->setTextSize(2);
     APP_drawTextCenter(scrollMenuList[currentMenuIndex+1], 0 , 180, 2);
 }
 ///////////////////////////////////////////////////////////////////////
@@ -124,7 +116,6 @@ void APP_scrollMenu_DOWN(){
     if(currentMenuIndex!=0){
       currentMenuIndex-=1;
       APP_scrollMenu();
-      Serial.println("down");
    }
  }
 void APP_updateScrollMenu (){

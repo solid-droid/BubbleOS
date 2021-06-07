@@ -84,6 +84,10 @@ void FEND_network(){
   if(touch){
    if(BEND_delay(500,3)) APP_updateScrollMenu(); 
  }
+  if(BEND_srollMenuSelection()){
+    clearScreen = true;
+    FEND_screenBuilder();
+ }
 }
 
 void FEND_power(){
@@ -99,6 +103,10 @@ void FEND_power(){
   if(touch){
    if(BEND_delay(500,3)) APP_updateScrollMenu(); 
  }
+  if(BEND_srollMenuSelection()){
+    clearScreen = true;
+    FEND_screenBuilder();
+ }
 }
 
 void FEND_nav_alarm(){
@@ -108,14 +116,17 @@ void FEND_nav_alarm(){
     scrollMenuList[0] = "GPS";
     scrollMenuList[1] = "Time";
     scrollMenuList[2] = "Alarm";
-    scrollMenuList[3] = "TT1";
-    scrollMenuList[4] = "T201";
-    scrollMenuList[5] = "";
+    scrollMenuList[3] = "";
     APP_scrollMenu();
  }
 
  if(touch){
      if(BEND_delay(500,3)) APP_updateScrollMenu(); 
+ }
+ if(BEND_srollMenuSelection()){
+    clearScreen = true;
+    testScreen();
+    FEND_screenBuilder();
  }
 }
 
@@ -125,10 +136,6 @@ void FEND_bubbleMenu(){
  {
     ttgo->tft->drawCircle(120,120,110, TFT_WHITE);
  }
-}
-
-void FEND_setTimeMenu(){
-
 }
 
 void FEND_loadIcons(){
