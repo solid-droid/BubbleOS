@@ -5,6 +5,13 @@ Smart Watch OS for lilygo T-Watch 2020 v2
 
 ![ezgif-7-8682f3b8bb51](https://user-images.githubusercontent.com/32586986/120884801-f0f8bf00-c602-11eb-8271-17e863c66293.gif)
 
+> Short Term Goals  
+
+1. Multi screen handlers
+2. Pattern Recognition based keyboard
+3. Widgets -> Button, toggle Button, Slider.
+4. add new programs while running
+
 > File Structure  
 
 ![file_struct_watch (2)](https://user-images.githubusercontent.com/32586986/120196580-a3183b80-c23d-11eb-99d6-1febd3c8f595.png)
