@@ -1,6 +1,7 @@
 void testScreen(){
-  screenData = "{\"widgets\":[{\"type\":0,\"text\":\"button0\",\"posY\":0,\"screen\":0,\"event\":\"backgroundBlue\"},{\"type\":0,\"text\":\"button1\",\"posY\":1,\"screen\":0,\"event\":\"backgroundRed\"},{\"type\":0,\"text\":\"button2\",\"posY\":2,\"screen\":0,\"event\":\"backgroundRed\"},{\"type\":0,\"text\":\"button3\",\"posY\":3,\"screen\":0,\"event\":\"backgroundRed\"}],\"events\":{\"backgroundBlue\":[\"Bcolor\",\"blue\"],\"backgroundRed\":[\"Bcolor\",\"red\"]}}";}
+  screenData = "{\"widgets\":[{\"type\":0,\"text\":\"button0\",\"posY\":0,\"screen\":0,\"event\":\"backgroundBlue\"},{\"type\":0,\"text\":\"button1\",\"posY\":1,\"screen\":0,\"event\":\"backgroundRed\"},{\"type\":0,\"text\":\"button2\",\"posY\":2,\"screen\":0,\"event\":\"backgroundRed\"}],\"events\":{\"backgroundBlue\":[\"Bcolor\",\"blue\"],\"backgroundRed\":[\"Bcolor\",\"red\"]}}";
 
+}
 struct eventhandler{
   String event;
   int posY;

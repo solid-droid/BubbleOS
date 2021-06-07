@@ -86,6 +86,7 @@ void FEND_network(){
  }
   if(BEND_srollMenuSelection()){
     clearScreen = true;
+    screenData="";
     FEND_screenBuilder();
  }
 }
@@ -105,6 +106,7 @@ void FEND_power(){
  }
   if(BEND_srollMenuSelection()){
     clearScreen = true;
+    screenData = "";
     FEND_screenBuilder();
  }
 }
