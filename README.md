@@ -16,6 +16,10 @@ Smart Watch OS for lilygo T-Watch 2020 v2
 ![file_struct_watch (2)](https://user-images.githubusercontent.com/32586986/120196580-a3183b80-c23d-11eb-99d6-1febd3c8f595.png)
 
 ## Logs:  
+> 08-06-2021
+
+1. Added JSON program extracter for external apps
+
 > 06-06-2021
 
 1. Added basic Menu Navigation
