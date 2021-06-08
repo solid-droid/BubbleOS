@@ -31,6 +31,8 @@
 #include ".\Assets\battery\battery_3.h"
 #include ".\Assets\battery\battery_4.h"
 
+#include ".\Assets\apps\IOT.h"
+
 #include "config.h"
 #include <soc/rtc.h>
 #include <ArduinoJson.h>
@@ -82,7 +84,7 @@ uint8_t currentMenuIndex =0;             //For Scroll Menu
 String  scrollMenuList[10];              //Menu List
 bool clearScreen         = false;        //Enable to clear screen.
 String screenData        = "";           //Variable to store JSON configuration for custom screens 
-StaticJsonDocument<2000> screenJSON;            //Updates screen based on screenData value.
+StaticJsonDocument<2000> screenJSON;     //Updates screen based on screenData value.
 
 //////////////--Tunable Variable--////////////////////////////////////////////////////////////////
 int  idleTime0          = 7;             //Maximum allowed idle time (sec) before screen dims (No touch)
@@ -144,6 +146,7 @@ void loop() {
   FEND_loadIcons();
   screenLoad = true;
   clearScreen = false;
+  FEND_SB_eventCounter = 0;
  }
  else screenLoad = false;
  

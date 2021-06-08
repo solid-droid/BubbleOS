@@ -132,11 +132,16 @@ void FEND_nav_alarm(){
  }
 }
 
+bool FEND_bubbleMovCount = 0;
 void FEND_bubbleMenu(){
 //  if(BEND_delay(1000,4))APP_digitalClock();
    if(screenLoad)
  {
-    ttgo->tft->drawCircle(120,120,110, TFT_WHITE);
+  APP_bubbleMenu();
+//    ttgo->tft->drawCircle(120,120,110, TFT_WHITE);
+ }
+ if(touch){
+  APP_updateBubbleMenu();
  }
 }
 
