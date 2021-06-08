@@ -137,12 +137,19 @@ void FEND_bubbleMenu(){
 //  if(BEND_delay(1000,4))APP_digitalClock();
    if(screenLoad)
  {
-  APP_bubbleMenu();
 //    ttgo->tft->drawCircle(120,120,110, TFT_WHITE);
+    FEND_SB_beginKeyBoard();
  }
+
  if(touch){
-  APP_updateBubbleMenu();
+  if(hold){
+    BEND_characterRecogniser();
+    FEND_SB_keyboard_clearChar();
+  }
+  else
+    FEND_SB_updateKeyBoard();
  }
+
 }
 
 void FEND_loadIcons(){

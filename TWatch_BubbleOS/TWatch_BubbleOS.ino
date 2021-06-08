@@ -85,6 +85,8 @@ String  scrollMenuList[10];              //Menu List
 bool clearScreen         = false;        //Enable to clear screen.
 String screenData        = "";           //Variable to store JSON configuration for custom screens 
 StaticJsonDocument<2000> screenJSON;     //Updates screen based on screenData value.
+uint8_t keyboardChar[50000][2];          //character pattern buffer for keyboard
+uint32_t keyboardCharIndex = 0;
 
 //////////////--Tunable Variable--////////////////////////////////////////////////////////////////
 int  idleTime0          = 7;             //Maximum allowed idle time (sec) before screen dims (No touch)

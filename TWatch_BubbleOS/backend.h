@@ -173,3 +173,7 @@ bool BEND_srollMenuSelection() {
   else return false;
   
 }
+
+void BEND_characterRecogniser(){
+  
+}

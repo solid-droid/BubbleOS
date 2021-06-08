@@ -8,7 +8,7 @@ struct eventhandler{
   uint8_t type;
 };
 ///////////////--Widgets--///////////////
-void FEND_SB_drawButton(String text, uint8_t posY)
+void FEND_SB_drawButton(String text, uint8_t posY=0 , uint8_t posX=0)
 {
  uint8_t x=0, y=0, fontSize =2, textSize = text.length()*6*fontSize;
  
@@ -16,12 +16,52 @@ void FEND_SB_drawButton(String text, uint8_t posY)
  else if(posY==1) y=100;
  else if(posY==2) y=160;
  else if(posY==3) y=210;
+
+uint8_t rectX = 102 - textSize/2;
+uint8_t rectY = y-18;
+uint8_t rectW = textSize+27;
+uint8_t rectH = 7*fontSize+27;
+
+  if(posX!=0){
+    if(posX==1)rectX = 0;
+    if(posX==2)rectX = 60;
+    if(posX==3)rectX = 130;
+    if(posX==4)rectX = 190;
+  }
  
  ttgo->tft->setTextColor(TFT_WHITE);
- ttgo->tft->fillRoundRect(102 - textSize/2, y-18, textSize+27 , 7*fontSize+27 , 5 , 0x0394);
- APP_drawTextCenter(text, 0 , y-3, fontSize);
- ttgo->tft->drawRoundRect(100 - textSize/2, y-20 , textSize+30 , 7*fontSize+30 , 10 , TFT_WHITE);
+ ttgo->tft->fillRoundRect(rectX , rectY , rectW , rectH , 5 , 0x0394);
+ if(posX==0)
+ APP_drawTextCenter(text, posX , y-3, fontSize);
+ else
+ ttgo->tft->drawString(text, rectX+12, y-3); 
+ ttgo->tft->drawRoundRect(rectX -2 , rectY-2 , rectW+3 , rectH+3 , 10 , TFT_WHITE);
 }
+///////////////////--pattern keyboard--////////////////////////
+void FEND_SB_beginKeyBoard(){
+   uint8_t fontSize =2;
+   ttgo->tft->setTextColor(TFT_DARKGREY);
+   APP_drawTextCenter("Draw A Character", 0 , 97, fontSize);
+   ttgo->tft->drawRoundRect(2 , 83 , 236 , 7*fontSize+27 , 10 , TFT_WHITE);
+   ttgo->tft->setTextColor(TFT_WHITE);
+   FEND_SB_drawButton("X", 0, 2);
+   FEND_SB_drawButton(">", 0, 3);
+}
+
+void FEND_SB_updateKeyBoard(){
+  if(keyboardCharIndex<50000){
+  keyboardChar[keyboardCharIndex][0]=touchX;
+  keyboardChar[keyboardCharIndex++][1]=touchY;
+  ttgo->tft->drawPixel(touchX, touchY, TFT_WHITE);
+  }
+ }
+
+ void FEND_SB_keyboard_clearChar(){
+  for(int i=0; i<keyboardCharIndex;++i)
+  ttgo->tft->drawPixel(keyboardChar[i][0], keyboardChar[i][1], TFT_BLACK);
+  FEND_SB_beginKeyBoard();
+  keyboardCharIndex=0;
+ }
 
 ///////////////////////////////
 struct eventhandler FEND_SB_eventList[20];
