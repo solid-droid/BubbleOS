@@ -6,10 +6,9 @@ Smart Watch OS for lilygo T-Watch 2020 v2
 ![ezgif-7-8682f3b8bb51](https://user-images.githubusercontent.com/32586986/120884801-f0f8bf00-c602-11eb-8271-17e863c66293.gif)
 
 > Short Term Goals  
-1. Applw Watch Menu replica
-2. Pattern Recognition based keyboard
-3. Widgets -> Button, toggle Button, Slider. Input box , Scroll Menu
-4. Add custom apps in run-time
+1. Pattern Recognition based keyboard
+2. Widgets -> Button, toggle Button, Slider. Input box , Scroll Menu
+3. Add custom apps in run-time
 
 > File Structure  
 
