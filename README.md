@@ -9,6 +9,7 @@ Smart Watch OS for lilygo T-Watch 2020 v2
 1. Pattern Recognition based keyboard
 2. Widgets -> Button, toggle Button, Slider. Input box , Scroll Menu
 3. Add custom apps in run-time
+4. IOT related apps
 
 > File Structure  
 
