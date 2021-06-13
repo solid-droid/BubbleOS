@@ -44,7 +44,7 @@ void FEND_SB_beginKeyBoard(){
    APP_drawTextCenter("Draw A Character", 0 , 97, fontSize);
    ttgo->tft->drawRoundRect(2 , 83 , 236 , 7*fontSize+27 , 10 , TFT_WHITE);
    ttgo->tft->setTextColor(TFT_WHITE);
-   FEND_SB_drawButton("X", 0, 2);
+   FEND_SB_drawButton("<", 0, 2);
    FEND_SB_drawButton(">", 0, 3);
 }
 

@@ -1,0 +1,22 @@
+{
+  "widgets": [
+    {
+      "type": 0,
+      "text": "button1",
+      "posY": 1,
+      "screen": 0,
+      "event": "backgroundRed"
+    },
+    {
+      "type": 0,
+      "text": "button2",
+      "posY": 2,
+      "screen": 0,
+      "event": "backgroundBlue"
+    }
+  ],
+  "events": {
+    "backgroundBlue": ["Bcolor", "053F"],
+    "backgroundRed": ["Bcolor", "F80B"]
+  }
+}

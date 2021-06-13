@@ -143,8 +143,10 @@ void FEND_bubbleMenu(){
 
  if(touch){
   if(hold){
+    if(BEND_delay(500,5)){
     BEND_characterRecogniser();
     FEND_SB_keyboard_clearChar();
+    }
   }
   else
     FEND_SB_updateKeyBoard();
