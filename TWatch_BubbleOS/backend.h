@@ -141,7 +141,7 @@ bool BEND_checkTap(uint8_t *pos){
 }
 
 bool BEND_updateScreen(){
-uint8_t battery[4]={0,50,0,50}, menu[4]={0,50,200,240} , network[4]={190, 240 ,190, 240}, gps[4]={190, 240, 0 ,  60};
+uint8_t network[4]={0,50,0,50}, menu[4]={0,50,200,240} , battery[4]={190, 240 ,190, 240}, gps[4]={190, 240, 0 ,  60};
 if(tap){
   uint8_t prev = currentScreen;
   bool refresh = false;
@@ -149,15 +149,15 @@ if(tap){
       refresh = true;
       currentScreen     = 4;
     }
-    if(BEND_checkTap(network)){
+    if(showNetworkIcon && BEND_checkTap(network)){
       refresh = true;
       currentScreen     = 1;
     }
-    if(BEND_checkTap(battery)){
+    if(showBatteryIcon && BEND_checkTap(battery)){
       refresh = true;
       currentScreen     = 2;
     }
-    if(BEND_checkTap(gps)){
+    if(showAlarmGPSIcon && BEND_checkTap(gps)){
       refresh = true;
       currentScreen     = 3;
     }
@@ -175,5 +175,6 @@ bool BEND_srollMenuSelection() {
 }
 
 void BEND_characterRecogniser(){
-  
+ 
+
 }

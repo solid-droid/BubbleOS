@@ -85,8 +85,19 @@ String  scrollMenuList[10];              //Menu List
 bool clearScreen         = false;        //Enable to clear screen.
 String screenData        = "";           //Variable to store JSON configuration for custom screens 
 StaticJsonDocument<2000> screenJSON;     //Updates screen based on screenData value.
-uint8_t keyboardChar[50000][2];          //character pattern buffer for keyboard
-uint32_t keyboardCharIndex = 0;
+uint8_t keyboardChar[5][5];              //character pattern buffer for keyboard
+
+////---ICON configs---////////////
+bool showAlarmGPSIcon = true;
+uint8_t ICON_GPS[4] = {190,5,22,23};
+uint8_t ICON_ALARM[4] = {203,24,35,34};
+
+bool showNetworkIcon = true;
+uint8_t ICON_WIFI[4] = {22,0,21,22}; //x , y, w, h 
+uint8_t ICON_BT[4]   = {2,26,22,28};
+
+bool showBatteryIcon = true;
+uint8_t ICON_BATTERY[4] = {197,198,43,42};
 
 //////////////--Tunable Variable--////////////////////////////////////////////////////////////////
 int  idleTime0          = 7;             //Maximum allowed idle time (sec) before screen dims (No touch)
@@ -141,8 +152,8 @@ void loop() {
   BEND_powerButtonInterrupt();
   BEND_swipeBrightness();
   //////////////////////////////////
- if(BEND_delay(300,0))  FEND_wifi_connecting();
- if(BEND_delay(5000,1)) FEND_battery_Icon();
+ if(showNetworkIcon && BEND_delay(300,0))  FEND_wifi_connecting();
+ if(showBatteryIcon && BEND_delay(5000,1)) FEND_battery_Icon();
  if(BEND_updateScreen() || clearScreen){
   ttgo->tft->fillScreen(TFT_BLACK);
   FEND_loadIcons();
@@ -151,11 +162,14 @@ void loop() {
   FEND_SB_eventCounter = 0;
  }
  else screenLoad = false;
- 
-  switch(currentScreen)
+//////---Application screens --///////////
+ switch(currentScreen)
   {
     case 0 : //Clock screen - home
       if(BEND_delay(1000,2)) FEND_clock(); 
+      showAlarmGPSIcon = true;
+      showNetworkIcon = true;
+      showBatteryIcon = true;
       break;
     case 1 : //Network Menu 
       FEND_network();
@@ -173,5 +187,4 @@ void loop() {
       FEND_screenBuilder();
       break;
   }
-
 }

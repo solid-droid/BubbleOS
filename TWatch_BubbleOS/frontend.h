@@ -10,14 +10,14 @@ void FEND_clock(){
 
 void FEND_wifi_connected()
 {
-  uint8_t x= 190, y = 216, w = 21, h= 22;
+  uint8_t x= ICON_WIFI[0], y = ICON_WIFI[1], w = ICON_WIFI[2], h= ICON_WIFI[3];
   ttgo->tft->pushImage(x, y,  w, h, wifi_4);
 }
 
 uint8_t FEND_wifi_counter = 0;
 void FEND_wifi_connecting()
 {
-  uint8_t x= 190, y = 216, w = 21, h= 22;
+  uint8_t x= ICON_WIFI[0], y = ICON_WIFI[1], w = ICON_WIFI[2], h= ICON_WIFI[3];
     if(FEND_wifi_counter == 1) ttgo->tft->pushImage(x, y,  w, h, wifi_0);
     else if(FEND_wifi_counter == 2) ttgo->tft->pushImage(x, y,  w, h, wifi_1);
     else if(FEND_wifi_counter == 3) ttgo->tft->pushImage(x, y,  w, h, wifi_2);
@@ -28,16 +28,16 @@ void FEND_wifi_connecting()
 }
 
 void FEND_bluetooth_ON(){
-  uint8_t x= 213, y = 178, w = 22, h= 28;
+ uint8_t x= ICON_BT[0], y = ICON_BT[1], w = ICON_BT[2], h= ICON_BT[3];
   ttgo->tft->pushImage(x, y,  w, h, bluetooth_ON);
 }
 
 void FEND_bluetooth_OFF(){
-  uint8_t x= 213, y = 178, w = 22, h= 28;
+ uint8_t x= ICON_BT[0], y = ICON_BT[1], w = ICON_BT[2], h= ICON_BT[3];
   ttgo->tft->pushImage(x, y,  w, h, bluetooth_OFF);
 }
 void FEND_battery_Icon(){
-  uint8_t x=0, y =0, w = 43, h= 42;
+ uint8_t x= ICON_BATTERY[0], y = ICON_BATTERY[1], w = ICON_BATTERY[2], h= ICON_BATTERY[3];
     if(battery<10)ttgo->tft->pushImage(x, y,  w, h, battery_0);
     else if(battery<30)ttgo->tft->pushImage(x, y,  w, h, battery_1);
     else if(battery<50)ttgo->tft->pushImage(x, y,  w, h, battery_2);
@@ -52,22 +52,22 @@ void FEND_menu_Icon(){
 }
 
 void FEND_GPS_ON(){
-  uint8_t x=190, y =5, w = 22, h= 23;
+ uint8_t x= ICON_GPS[0], y = ICON_GPS[1], w = ICON_GPS[2], h= ICON_GPS[3];
   ttgo->tft->pushImage(x, y,  w, h, gps_ON);
 }
 
 void FEND_GPS_OFF(){
-  uint8_t x=190, y =5, w = 22, h= 23;
+ uint8_t x= ICON_GPS[0], y = ICON_GPS[1], w = ICON_GPS[2], h= ICON_GPS[3];
   ttgo->tft->pushImage(x, y,  w, h, gps_OFF);
 }
 
 void FEND_alarm_ON(){
-  uint8_t x=203, y =24, w = 35, h= 34;
+ uint8_t x= ICON_ALARM[0], y = ICON_ALARM[1], w = ICON_ALARM[2], h= ICON_ALARM[3];
   ttgo->tft->pushImage(x, y,  w, h, alarm_ON);
 }
 
 void FEND_alarm_OFF(){
-  uint8_t x=203, y =24, w = 35, h= 34;
+uint8_t x= ICON_ALARM[0], y = ICON_ALARM[1], w = ICON_ALARM[2], h= ICON_ALARM[3];
   ttgo->tft->pushImage(x, y,  w, h, alarm_OFF);
 }
 
@@ -142,13 +142,6 @@ void FEND_bubbleMenu(){
  }
 
  if(touch){
-  if(hold){
-    if(BEND_delay(500,5)){
-    BEND_characterRecogniser();
-    FEND_SB_keyboard_clearChar();
-    }
-  }
-  else
     FEND_SB_updateKeyBoard();
  }
 

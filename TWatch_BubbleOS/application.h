@@ -126,57 +126,9 @@ void APP_updateScrollMenu (){
       }
 }
 
-///////////////---Bubble--Menu--///////////////////////////////////////////
 void APP_drawImage(const unsigned short *img, uint8_t x, uint8_t y, uint8_t w,  uint8_t h){
   ttgo->tft->pushImage(x, y,  w, h, img);
 }
-void APP_clearImage(const unsigned short *img, uint8_t x, uint8_t y, uint8_t w,  uint8_t h){
+void APP_clearImage(uint8_t x, uint8_t y, uint8_t w,  uint8_t h){
   ttgo->tft->fillRect(x, y,  w, h, TFT_BLACK);
 }
-
-int16_t APP_bubblePos[6][2];
-int16_t APP_bubbleSize =55;
-
-void APP_updateBubbleMenu(){
-  int16_t bubblePos[6][2];
-  bool change = true;
-  for(uint8_t i=0; i< 6;++i){
-    bubblePos[i][0]=APP_bubblePos[i][0];
-    bubblePos[i][1]=APP_bubblePos[i][1];
-  }
-  for(uint8_t i=0; i< 6;++i){
-     bubblePos[i][0] += (touchX-touchPoint[0])/10;
-     bubblePos[i][1] += (touchY-touchPoint[1])/10;
-     if(bubblePos[i][0]>180 || bubblePos[i][0] <10 || bubblePos[i][1]>180 || bubblePos[i][1]<10 )
-     change = false;
-  }
-  for(uint8_t i=0; i< 6;++i){
-    if(change){
-      APP_clearImage(IOT,APP_bubblePos[i][0],APP_bubblePos[i][1],APP_bubbleSize,APP_bubbleSize);
-      APP_bubblePos[i][0]=bubblePos[i][0];
-      APP_bubblePos[i][1]=bubblePos[i][1];
-    }
-    APP_drawImage(IOT,APP_bubblePos[i][0],APP_bubblePos[i][1],APP_bubbleSize,APP_bubbleSize);
-  }
-
-}
-
-void APP_bubbleMenu(){
-  APP_bubblePos[0][0] = 119;
-  APP_bubblePos[1][0] = 52;
-  APP_bubblePos[2][0] = 32;
-  APP_bubblePos[3][0] = 105;
-  APP_bubblePos[4][0] = 97;
-  APP_bubblePos[5][0] = 170;
-  APP_bubblePos[0][1] = 19;
-  APP_bubblePos[1][1] = 39;
-  APP_bubblePos[2][1] = 116;
-  APP_bubblePos[3][1] = 84;
-  APP_bubblePos[4][1] = 153;
-  APP_bubblePos[5][1] = 102;
-  for(uint8_t i=0; i< 6;++i){
-  APP_drawImage(IOT,APP_bubblePos[i][0],APP_bubblePos[i][1],APP_bubbleSize,APP_bubbleSize);
-  }
-
-}
- 
