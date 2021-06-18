@@ -51,79 +51,83 @@ void FEND_SB_drawGrid(uint8_t dim=5, uint8_t gap=35){
   }
 }
 
-bool FEND_SB_pixeArray[5][5];
-uint8_t FEND_SB_prevPixel[2] = {6,6};
-void FEND_SB_beginKeyBoard(){
-   uint8_t fontSize =2;
-   showNetworkIcon = false;
-   showAlarmGPSIcon = false;
-   showBatteryIcon  = false;
-   
-   APP_clearImage(ICON_BATTERY[0],ICON_BATTERY[1], ICON_BATTERY[2],  ICON_BATTERY[3]);
-   APP_clearImage(ICON_WIFI[0],ICON_WIFI[1], ICON_WIFI[2],  ICON_WIFI[3]);
-   APP_clearImage(ICON_BT[0],ICON_BT[1], ICON_BT[2],  ICON_BT[3]);
-   APP_clearImage(ICON_GPS[0],ICON_GPS[1], ICON_GPS[2],  ICON_GPS[3]);
-   APP_clearImage(ICON_ALARM[0],ICON_ALARM[1], ICON_ALARM[2],  ICON_ALARM[3]);
-
-   for(uint8_t i=0; i< 5; ++i)
-   for(uint8_t j=0; j< 5; ++j)
-   FEND_SB_pixeArray[i][j] = false;
-   
-   ttgo->tft->setTextColor(TFT_DARKGREY);
-   ttgo->tft->drawString("Draw A Pattern", 65 , 15);
-   ttgo->tft->drawRoundRect(52 , 3 , 186 , 7*fontSize+27 , 10 , TFT_WHITE);
-
-   FEND_SB_drawGrid();
-   ttgo->tft->setTextColor(TFT_WHITE);
-   FEND_SB_drawButton(">", 0, 1); //y, x, grid
-   FEND_SB_drawButton("C", 1, 1);
-   FEND_SB_drawButton("N", 2, 1);
+void FEND_SB_drawCharList(uint8_t start){
+     for(uint8_t i=0; i<5; ++i)
+     for(uint8_t j=0; j<=5; ++j)
+     {
+         ttgo->tft->drawString(String(char(start+(i*5+j))), 65 + 35*j  , 55+ 35*i);
+     }
 }
 
-bool preHold = false;
+void FEND_SB_drawSymbol (bool page1){
+  uint8_t x =0, y =0;
+  for(uint8_t i = 0; i < (page1?5:3); ++i)
+   {
+      
+
+      uint8_t j =0;
+      uint8_t dat = page1 ? SymPage[i][j] : NumPage [i][j];
+      uint8_t checkDat = page1 ? SymPage[i][++j] : NumPage [i][++j];
+      do {
+        ttgo->tft->drawString(String(char(dat)), 65 + 35*x  , 55+ 35*y);
+        
+        if(x>3) {y++; x =0;}
+        else x++;
+        dat++;
+      }
+      while(dat<=checkDat);
+   }
+}
+
+void FEND_SB_beginKeyBoard(uint8_t page =0 , bool clearAll = true){
+
+   if(clearAll){
+     showNetworkIcon = false;
+     showAlarmGPSIcon = false;
+     showBatteryIcon  = false;
+     keyboardText = "";
+     uint8_t fontSize =2;
+     
+     APP_clearImage(ICON_BATTERY[0],ICON_BATTERY[1], ICON_BATTERY[2],  ICON_BATTERY[3]);
+     APP_clearImage(ICON_WIFI[0],ICON_WIFI[1], ICON_WIFI[2],  ICON_WIFI[3]);
+     APP_clearImage(ICON_BT[0],ICON_BT[1], ICON_BT[2],  ICON_BT[3]);
+     APP_clearImage(ICON_GPS[0],ICON_GPS[1], ICON_GPS[2],  ICON_GPS[3]);
+     APP_clearImage(ICON_ALARM[0],ICON_ALARM[1], ICON_ALARM[2],  ICON_ALARM[3]);
+  
+     ttgo->tft->drawRoundRect(52 , 3 , 186 , 7*fontSize+27 , 10 , TFT_WHITE);
+     ttgo->tft->setTextColor(TFT_WHITE);
+     FEND_SB_drawButton(">", 0, 1); //y, x, grid
+     FEND_SB_drawButton("<", 1, 1);
+     FEND_SB_drawButton("N", 2, 1);
+   }
+
+   ttgo->tft->fillRect(55, 45, 175, 170, TFT_BLACK);
+   FEND_SB_drawGrid();
+   currentPage = page;
+   ttgo->tft->setTextColor(TFT_DARKGREY);
+   if(page==0)FEND_SB_drawCharList(97);       //a-y
+   else if(page == 1)FEND_SB_drawCharList(65);//A-Y
+   else if(page == 2)FEND_SB_drawSymbol(true);
+   else if(page == 3)FEND_SB_drawSymbol(false);
+}
+
 void FEND_SB_updateKeyBoard(){
-  uint8_t newPixel[2] = {6,6};
   bool valid = false;
-  bool value = false;
-  if(touchX>55 && touchY>45)
     for(uint8_t i=1; i<=5; ++i)//finding row
       if(touchY < 45 + i*35) {
         for(uint8_t j=1; j<=5; ++j)//finding column
           if(touchX < 55 + j*35)
            {
-            if((newPixel[0]!=FEND_SB_prevPixel[0] && newPixel[1]!=FEND_SB_prevPixel[1]) || FEND_SB_prevPixel[0]==6){
               valid = true;
-              Serial.println(hold);
-              value = !FEND_SB_pixeArray[j-1][i-1];
-              FEND_SB_pixeArray[j-1][i-1] = preHold ? !value :  true;
-              if(preHold && !hold){
-                preHold = false;
-              }
-              newPixel[0]=j-1;
-              newPixel[1]=i-1;
+              keyboardText = keyboardText + String(char(97+((i-1)*5+(j-1))));
+              break;
             }
-            break;
-           }
          if(valid) break;
-      }
- if(valid && !preHold){
-  if(hold){
-    preHold = true;
-    ttgo->tft->fillRect(55 + newPixel[0]*35 +1 , 45 + newPixel[1]*35 + 1 , 34, 34, value ? TFT_WHITE : TFT_BLACK);  
-    FEND_SB_pixeArray[ newPixel[0]][ newPixel[1]] = value;
-  } else{
-    ttgo->tft->fillRect(55 + newPixel[0]*35 +1 , 45 + newPixel[1]*35 +1, 34, 34,TFT_WHITE);  
-  }
-     
- }
-  FEND_SB_prevPixel[0] = newPixel[0];
-  FEND_SB_prevPixel[1] = newPixel[1];
+        }    
  }
 
  void FEND_SB_keyboard_clearChar(){
-//  for(int i=0; i<keyboardCharIndex;++i)
-//  ttgo->tft->drawPixel(keyboardChar[i][0], keyboardChar[i][1], TFT_BLACK);
-//  FEND_SB_beginKeyBoard();
+
  }
 
 ///////////////////////////////
