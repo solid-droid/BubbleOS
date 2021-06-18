@@ -132,18 +132,30 @@ void FEND_nav_alarm(){
  }
 }
 
-bool FEND_bubbleMovCount = 0;
+bool FEND_cursorON = true;
 void FEND_bubbleMenu(){
-//  if(BEND_delay(1000,4))APP_digitalClock();
-   if(screenLoad)
- {
-//    ttgo->tft->drawCircle(120,120,110, TFT_WHITE);
-    FEND_SB_beginKeyBoard();
- }
+  
+  if(BEND_delay(1000,5)){
+    APP_drawText(keyboardText + (FEND_cursorON ? String('|'):String(' ')), 65 , 15, 10);
+    FEND_cursorON = FEND_cursorON ? false : true;
+  }
+  
+   if(screenLoad) FEND_SB_beginKeyBoard();
 
- if(touch){
-    FEND_SB_updateKeyBoard();
- }
+  if(tap){
+      if(touchX>55 && touchY>45) FEND_SB_updateKeyBoard();
+      else if(touchX<50)
+        if(touchY>0 && touchY <60){currentScreen= 0; clearScreen = true;}                      //Completed typing
+        else if (touchY>70 && touchY <120)keyboardText.remove(keyboardText.length()-1); //Delete last Character
+        else if (touchY>130 && touchY <160) {
+          if(currentPage<3){
+            FEND_SB_beginKeyBoard(++currentPage,false);
+          } else {
+            FEND_SB_beginKeyBoard(0,false);
+          }
+          
+          }
+  }
 
 }
 
