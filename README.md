@@ -6,16 +6,24 @@ Smart Watch OS for lilygo T-Watch 2020 v2
 ![ezgif-7-8682f3b8bb51](https://user-images.githubusercontent.com/32586986/120884801-f0f8bf00-c602-11eb-8271-17e863c66293.gif)
 
 > Short Term Goals  
-1. Pattern Recognition based keyboard
-2. Widgets -> Button, toggle Button, Slider. Input box , Scroll Menu
-3. Add custom apps in run-time
-4. IOT related apps
+1. Battery charging icon
+2. Webserver -> set time, date, alarm , watch face
+3. Webserver - upload to EEPROM -> alarm list , watch face, apps
+4. Webserver -> read IOT data, read GPS data, read usage data
+5. ESP-NOW -> p2p IOT protocol for ESP32 / ESP8266
+6. APP UI -> Senser data UI, buttons, slider, joystick
+7. IOT over the internet
 
 > File Structure  
 
 ![file_struct_watch (2)](https://user-images.githubusercontent.com/32586986/120196580-a3183b80-c23d-11eb-99d6-1febd3c8f595.png)
 
 ## Logs:  
+> 16-08-2021
+1. Taking out keyboard (should be doable with smartphone) - may come in future release
+2. Taking out JSON parser for external apps ( faster and easy to manage hardcoded UI) - may come in future release
+3. Bubble button for apps
+
 > 08-06-2021
 
 1. Added JSON program extracter for external apps
