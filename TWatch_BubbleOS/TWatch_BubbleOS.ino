@@ -83,12 +83,6 @@ bool    screenLoad      = false;         //For initial loading of screens
 uint8_t currentMenuIndex =0;             //For Scroll Menu
 String  scrollMenuList[10];              //Menu List
 bool clearScreen         = false;        //Enable to clear screen.
-String screenData        = "";           //Variable to store JSON configuration for custom screens 
-StaticJsonDocument<2000> screenJSON;    //Updates screen based on screenData value.
-String keyboardText   = "";             //Text buffer in keyboard
-uint8_t currentPage   = 0;
-uint8_t SymPage[5][2]  = {{122 , 0}, {90,0} , {33,39}, {44, 45},{58,64}};  // 1, 1, 6, 2, 6
-uint8_t NumPage[3][2]  = {{48, 57},{46,47},{40,43}}; //10 , 2, 4
 
 ////---ICON configs---////////////
 bool showAlarmGPSIcon = true;
@@ -162,7 +156,6 @@ void loop() {
   FEND_loadIcons();
   screenLoad = true;
   clearScreen = false;
-  FEND_SB_eventCounter = 0;
  }
  else screenLoad = false;
 //////---Application screens --///////////

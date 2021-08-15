@@ -86,7 +86,6 @@ void FEND_network(){
  }
   if(BEND_srollMenuSelection()){
     clearScreen = true;
-    screenData="";
     FEND_screenBuilder();
  }
 }
@@ -106,7 +105,6 @@ void FEND_power(){
  }
   if(BEND_srollMenuSelection()){
     clearScreen = true;
-    screenData = "";
     FEND_screenBuilder();
  }
 }
@@ -127,7 +125,6 @@ void FEND_nav_alarm(){
  }
  if(BEND_srollMenuSelection()){
     clearScreen = true;
-    testScreen();
     FEND_screenBuilder();
  }
 }
@@ -135,27 +132,24 @@ void FEND_nav_alarm(){
 bool FEND_cursorON = true;
 void FEND_bubbleMenu(){
   
-  if(BEND_delay(1000,5)){
-    APP_drawText(keyboardText + (FEND_cursorON ? String('|'):String(' ')), 65 , 15, 10);
-    FEND_cursorON = FEND_cursorON ? false : true;
-  }
-  
-   if(screenLoad) FEND_SB_beginKeyBoard();
-
-  if(tap){
-      if(touchX>55 && touchY>45) FEND_SB_updateKeyBoard();
-      else if(touchX<50)
-        if(touchY>0 && touchY <60){currentScreen= 0; clearScreen = true;}                      //Completed typing
-        else if (touchY>70 && touchY <120)keyboardText.remove(keyboardText.length()-1); //Delete last Character
-        else if (touchY>130 && touchY <160) {
-          if(currentPage<3){
-            FEND_SB_beginKeyBoard(++currentPage,false);
-          } else {
-            FEND_SB_beginKeyBoard(0,false);
-          }
-          
-          }
-  }
+  if(screenLoad)
+ {
+    currentMenuIndex =0;
+    scrollMenuList[0] = "app1";
+    scrollMenuList[1] = "app2";
+    scrollMenuList[2] = "app3";
+    scrollMenuList[3] = "app4";
+    scrollMenuList[4] = "app5";
+    scrollMenuList[5] = "";
+    APP_scrollMenu();
+ }
+  if(touch){
+   if(BEND_delay(500,3)) APP_updateScrollMenu(); 
+ }
+  if(BEND_srollMenuSelection()){
+    clearScreen = true;
+    FEND_screenBuilder();
+ }
 
 }
 
