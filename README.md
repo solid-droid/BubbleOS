@@ -6,13 +6,14 @@ Smart Watch OS for lilygo T-Watch 2020 v2
 ![ezgif-7-8682f3b8bb51](https://user-images.githubusercontent.com/32586986/120884801-f0f8bf00-c602-11eb-8271-17e863c66293.gif)
 
 > Short Term Goals  
-1. Battery charging icon
-2. Webserver -> set time, date, alarm , watch face
-3. Webserver - upload to EEPROM -> alarm list , watch face, apps
-4. Webserver -> read IOT data, read GPS data, read usage data
-5. ESP-NOW -> p2p IOT protocol for ESP32 / ESP8266
-6. APP UI -> Senser data UI, buttons, slider, joystick
-7. IOT over the internet
+1. Use bluetooth to reset wifi name and password
+2. Battery charging icon
+3. Webserver -> set time, date, alarm , watch face
+4. Webserver - upload to EEPROM -> alarm list , watch face, apps
+5. Webserver -> read IOT data, read GPS data, read usage data
+6. ESP-NOW -> p2p IOT protocol for ESP32 / ESP8266
+7. APP UI -> Senser data UI, buttons, slider, joystick
+8. IOT over the internet
 
 > File Structure  
 
