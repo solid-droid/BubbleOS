@@ -75,9 +75,9 @@ void FEND_network(){
  if(screenLoad)
  {
     currentMenuIndex =1;
-    scrollMenuList[0] = "Update";
-    scrollMenuList[1] = "Bluetooth";
-    scrollMenuList[2] = "WiFi";
+    scrollMenuList[0] = "ESP-NOW";
+    scrollMenuList[1] = "WiFi";
+    scrollMenuList[2] = "Bluetooth";
     scrollMenuList[3] = "";
     APP_scrollMenu();
  }
@@ -114,9 +114,8 @@ void FEND_nav_alarm(){
  {
     currentMenuIndex =1;
     scrollMenuList[0] = "GPS";
-    scrollMenuList[1] = "Time";
-    scrollMenuList[2] = "Alarm";
-    scrollMenuList[3] = "";
+    scrollMenuList[1] = "Alarm";
+    scrollMenuList[2] = "Watch";
     APP_scrollMenu();
  }
 
@@ -134,12 +133,12 @@ void FEND_bubbleMenu(){
   
   if(screenLoad)
  {
-    currentMenuIndex =0;
-    scrollMenuList[0] = "app1";
-    scrollMenuList[1] = "app2";
-    scrollMenuList[2] = "app3";
-    scrollMenuList[3] = "app4";
-    scrollMenuList[4] = "app5";
+    currentMenuIndex =1;
+    scrollMenuList[0] = "About";
+    scrollMenuList[1] = "App1";
+    scrollMenuList[2] = "App2";
+    scrollMenuList[3] = "App3";
+    scrollMenuList[4] = "App4";
     scrollMenuList[5] = "";
     APP_scrollMenu();
  }

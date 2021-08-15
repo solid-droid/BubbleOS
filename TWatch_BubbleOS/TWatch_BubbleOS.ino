@@ -35,11 +35,16 @@
 
 #include "config.h"
 #include <soc/rtc.h>
-#include <ArduinoJson.h>
+/////wifi
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <WiFiClientSecure.h>
 #include "cert.h"
+/////bluetooth
+#include <BLEDevice.h>
+#include <BLEUtils.h>
+#include <BLEServer.h>
+////ttgo
 TTGOClass *ttgo;
 
 TFT_eSPI tft = TFT_eSPI();    
@@ -107,6 +112,7 @@ String APP_list[20];                     //Max external app count
 uint32_t  BEND_delay_register[20]={};    //Max number of async delay calls
 uint8_t  loadBrightness = 100;           //Brightness 
 
+#include "bluetooth.h"
 #include "boot.h"
 #include "system.h"
 #include "application.h"
@@ -133,6 +139,7 @@ void setup() {
   FEND_clock();
   FEND_loadIcons();
 /////////////////////////////////////////////////
+startBluetooth();
 //BOOT_connectWiFi();
 //SYS_getAPPS();
 //APP_showAppList();
