@@ -1,5 +1,6 @@
 void FEND_clock(){
-//    APP_digitalClock();
+    APP_digitalClock();
+    APP_remainingTime();
     RTC_Date currentTime = ttgo->rtc->getDateTime();
     APP_drawHourNeedle(currentTime.hour);
     APP_drawMinutesNeedle(currentTime.minute);
@@ -8,7 +9,7 @@ void FEND_clock(){
     
 }
 
-void FEND_wifi_connected()
+void FEND_wifi_ON()
 {
   uint8_t x= ICON_WIFI[0], y = ICON_WIFI[1], w = ICON_WIFI[2], h= ICON_WIFI[3];
   ttgo->tft->pushImage(x, y,  w, h, wifi_4);
@@ -25,6 +26,11 @@ void FEND_wifi_connecting()
     else if(FEND_wifi_counter == 5) ttgo->tft->pushImage(x, y,  w, h, wifi_4);
     else FEND_wifi_counter = 0;
     FEND_wifi_counter++;;
+}
+
+void FEND_wifi_OFF(){
+ uint8_t x= ICON_WIFI[0], y = ICON_WIFI[1], w = ICON_WIFI[2], h= ICON_WIFI[3];
+  ttgo->tft->pushImage(x, y,  w, h, wifi_0);
 }
 
 void FEND_bluetooth_ON(){
@@ -77,7 +83,7 @@ void FEND_network(){
     currentMenuIndex =1;
     scrollMenuList[0] = "ESP-NOW";
     scrollMenuList[1] = "WiFi";
-    scrollMenuList[2] = "Bluetooth";
+    scrollMenuList[2] = "Status";
     scrollMenuList[3] = "";
     APP_scrollMenu();
  }
@@ -137,9 +143,7 @@ void FEND_bubbleMenu(){
     scrollMenuList[0] = "About";
     scrollMenuList[1] = "App1";
     scrollMenuList[2] = "App2";
-    scrollMenuList[3] = "App3";
-    scrollMenuList[4] = "App4";
-    scrollMenuList[5] = "";
+    scrollMenuList[3] = "";
     APP_scrollMenu();
  }
   if(touch){
@@ -152,11 +156,36 @@ void FEND_bubbleMenu(){
 
 }
 
+void FEND_WIFI_ICO(){
+  switch(WIFI_STATUS){
+    case 0 :  FEND_wifi_OFF();break;
+    case 2 :  FEND_wifi_ON();break;
+  }
+}
+
+
+void FEND_BT_ICO(){
+  if(BT_STATUS){
+    FEND_bluetooth_ON();
+  } else {
+    FEND_bluetooth_OFF();
+  }
+}
+
+
+void FEND_GPS_ICO(){
+   if(GPS_STATUS){
+    FEND_GPS_ON();
+  } else {
+    FEND_GPS_OFF();
+  }
+}
+
 void FEND_loadIcons(){
-  FEND_bluetooth_OFF();
-  FEND_wifi_connected();
+  FEND_WIFI_ICO();
+  FEND_BT_ICO();
+  FEND_GPS_ICO();
   FEND_menu_Icon();
   FEND_battery_Icon();
-  FEND_GPS_OFF();
   FEND_alarm_OFF();
 }

@@ -25,6 +25,8 @@ void BOOT_clearIRQ()
 
 void BOOT_deepSleep()
 {
+  WiFi.disconnect();
+  ttgo->tft->fillScreen(TFT_BLACK);
   ttgo->power->setPowerOutPut(AXP202_DCDC2, false);
   esp_sleep_enable_ext1_wakeup(GPIO_SEL_35, ESP_EXT1_WAKEUP_ALL_LOW);
   esp_deep_sleep_start(); 
@@ -49,16 +51,6 @@ bool BOOT_deviceStatus(String type)
   }
 }
 
-void BOOT_init_loadingScreen(){
-  byte xpos = 40; // Stating position for the display
-  byte ypos = 90;
-  ttgo->tft->fillScreen(TFT_BLACK);
-  ttgo->tft->setSwapBytes(true);
-  ttgo->tft->setTextSize(2);
-  ttgo->tft->setTextColor(0x6E2B, TFT_BLACK);
-  ttgo->tft->drawString("Loading...", xpos, ypos);
-}
-
 void BOOT_powerButton(){
    pinMode(AXP202_INT, INPUT_PULLUP);
    attachInterrupt(AXP202_INT, [] {irq = true;}, FALLING);
@@ -67,8 +59,32 @@ void BOOT_powerButton(){
    ttgo->power->setPowerOutPut(AXP202_DCDC2, false);
 }
 
-void BOOT_connectWiFi(){
+bool BOOT_connectWiFi(){
+    if (!WiFi.config(local_IP, gateway, subnet)) {
+      Serial.println("STA Failed to configure");
+    }
+    WiFi.disconnect();
+    Serial.println(ssid);
+    Serial.println(password);
     WiFi.begin(ssid, password);
+    uint8_t _count = 0;
+    while (WiFi.status() != WL_CONNECTED && _count < 30) {
+        delay(500);
+        Serial.print(".");
+        _count++;
+    }
+    Serial.println(".");
+    if(_count>= 30){
+      Serial.println("WiFi connection Failed");
+    } else {
+      Serial.println("WiFi connected");
+      Serial.print("IP address: ");
+      Serial.println(WiFi.localIP());
+      server.begin();
+      Serial.println("TCP server started");
+    }
+
+    return _count < 30 ? true : false;
 }
 
 void BOOT_RTC(){
@@ -98,7 +114,6 @@ void BOOT_SD()
    }
 }
 void BOOT() {
-//  BOOT_init_loadingScreen();
   BOOT_beginSystem();
   BOOT_powerButton();
   BOOT_power(SYS_devices[1], false);

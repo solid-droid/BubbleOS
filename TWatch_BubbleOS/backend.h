@@ -174,7 +174,106 @@ bool BEND_srollMenuSelection() {
   
 }
 
-void BEND_characterRecogniser(){
+void BEND_getWiFiClient(){
  
 
+}
+void BEND_getWiFiPassword(){
+ 
+
+}
+
+bool BEND_resetOS(){
+   WifiCred = 2;
+  if(EEPROM.read(0)!= clearEEPROM){
+    WifiCred = 0;
+    //set cleared
+      EEPROM.write(0, clearEEPROM);
+      EEPROM.commit();
+      delay(2);
+    //reset new user
+      EEPROM.write(1, 0);
+      EEPROM.commit();
+      delay(2);
+    return true;
+  }
+  return false;
+}
+
+void BEND_storeToEEPROM(char* dat, uint8_t s){
+ for(uint8_t i = 0; i < strlen(dat) ; ++i){
+  EEPROM.write(s+i, dat[i]);
+  EEPROM.commit();
+ } 
+}
+
+
+void BEND_storeWifiCred(){
+  EEPROM.write(2, strlen(ssid));
+  EEPROM.commit();
+  BEND_storeToEEPROM(ssid, 10);
+  EEPROM.write(3, strlen(password));
+  EEPROM.commit();
+  BEND_storeToEEPROM(password, 40);
+}
+
+void BEND_readWifiCred(){
+  String _ssid = "" , _pass = "";
+  char ch;
+  int ssidlen = EEPROM.read(2);
+  int passLen = EEPROM.read(3);
+  for(uint8_t i = 0; i < ssidlen ; ++i){
+    ch = EEPROM.read(10+i);
+   _ssid += ch;
+  }
+  for(uint8_t i = 0; i < passLen ; ++i){
+    ch = EEPROM.read(40+i);
+   _pass += ch;
+  }
+  
+  _ssid.toCharArray(ssid, 30);
+  _pass.toCharArray(password, 30);
+}
+
+
+void BEND_server(){
+  WiFiClient client = server.available();
+  if(client){
+
+    Serial.println("");
+    Serial.println("New client");
+    
+    if(!client.connected() || client.available()){
+
+          String req = client.readStringUntil('\r');
+          int addr_start = req.indexOf(' ');
+          int addr_end = req.indexOf(' ', addr_start + 1);
+          if (addr_start == -1 || addr_end == -1) {
+              Serial.print("Invalid request: ");
+              Serial.println(req);
+              return;
+          }
+          req = req.substring(addr_start + 1, addr_end);
+          Serial.print("Request: ");
+          Serial.println(req);
+      
+          String s;
+          if (req == "/")
+          {
+              s = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<!DOCTYPE HTML>\r\n<html>";
+              s += "Hello from BubbleOS";
+              s += "</html>\r\n\r\n";
+              Serial.println("Sending 200");
+          }
+          else
+          {
+              s = "HTTP/1.1 404 Not Found\r\n\r\n";
+              Serial.println("Sending 404");
+          }
+          client.print(s);
+      
+          client.stop();
+          Serial.println("Done with client");
+      }
+    }
 }

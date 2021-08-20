@@ -4,6 +4,13 @@
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
+String getString( std::string value){
+  String result = "";
+  for (int i =0; i< value.length(); ++i){
+    result += value[i]; 
+  }
+  return result;
+}
 
 class MyCallbacks: public BLECharacteristicCallbacks
 {
@@ -13,10 +20,17 @@ class MyCallbacks: public BLECharacteristicCallbacks
 
     if (value.length() > 0)
     {
-      for (int i = 0; i < value.length(); i++)
-      {
-        Serial.print(value[i]);
-      }
+       if(WifiCred == 0){
+          
+          WifiCred =1;
+          getString(value).toCharArray(ssid, 30);
+        }else if(WifiCred == 1){
+          
+          WifiCred = 2;
+          getString(value).toCharArray(password, 30);
+        }
+      
+       
       Serial.println();
     }
   }

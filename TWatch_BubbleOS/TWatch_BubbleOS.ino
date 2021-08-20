@@ -34,12 +34,21 @@
 #include ".\Assets\apps\IOT.h"
 
 #include "config.h"
+/////RTC
 #include <soc/rtc.h>
+/////EEPROM
+#include <EEPROM.h>
+#define EEPROM_SIZE 100
+//10-39 WIFI SSID
+//40-70 WIFI password
+//3     WIFI password length
+//2     WIFI SSID length
+//1    first time user
+//0    reset
+uint8_t clearEEPROM = 1;
 /////wifi
 #include <WiFi.h>
-#include <HTTPClient.h>
-#include <WiFiClientSecure.h>
-#include "cert.h"
+#include <WiFiClient.h>
 /////bluetooth
 #include <BLEDevice.h>
 #include <BLEUtils.h>
@@ -49,12 +58,14 @@ TTGOClass *ttgo;
 
 TFT_eSPI tft = TFT_eSPI();    
 
-const char * ssid = "SSID1-2.4G";
-const char * password = "12345678";
+char ssid[30];
+char password[30];
+WiFiServer server(80);
+IPAddress local_IP(192, 168, 1, 11);
+IPAddress gateway(192, 168, 1, 1);
+IPAddress subnet(255, 255, 0, 0);
 
-String NewFirmwareVer;
-String FirmwareVer = {"0.0"};
-static const char *version_url = "https://raw.githubusercontent.com/solid-droid/BubbleOS/main/Releases/LatestVersion.txt";
+String FirmwareVer = "0.0";
 
 ///////////////---System Variables---//////////////////////////////////////////////////////////
 char buf[128];
@@ -85,10 +96,15 @@ bool TouchWakeUp        = false;         //Wakeup by touch.
 uint8_t FEND_hour =0, FEND_minutes=0;    //Previous Hour and Minutes
 uint8_t currentScreen   = 0;             //Tracks screen
 bool    screenLoad      = false;         //For initial loading of screens
-uint8_t currentMenuIndex =0;             //For Scroll Menu
+uint8_t currentMenuIndex=0;              //For Scroll Menu
 String  scrollMenuList[10];              //Menu List
-bool clearScreen         = false;        //Enable to clear screen.
+bool clearScreen        = false;         //Enable to clear screen.
+uint8_t WifiCred        = 0;             //0- no data , 1 -client , 2 - client + pass
 
+byte WIFI_STATUS     = 0;            //0-not connected 1-connecting 2-connected
+bool BT_STATUS       = false;            //false-not connected true-connected
+bool GPS_STATUS      = false;            //false-not connected true-connected
+ 
 ////---ICON configs---////////////
 bool showAlarmGPSIcon = true;
 uint8_t ICON_GPS[4] = {190,5,22,23};
@@ -107,16 +123,21 @@ int  idleTime1          = 15;            //Maximum allowed idle time (sec) befor
 int  idleTime2          = 120;           //Maximum allowed idle time (sec) before shutDown
 int  dragThreshold      = 500;           //Threshold millis to treat tap as drag/hold.
 int  holdThreshold      = 0;             //Allowed movement range in hold mode.
-int  Max_APPS           = 20;            //Max external app count
-String APP_list[20];                     //Max external app count
 uint32_t  BEND_delay_register[20]={};    //Max number of async delay calls
 uint8_t  loadBrightness = 100;           //Brightness 
+int  Max_APPS           = 20;            //Max external app count
+String APP_list[20];                     //Max external app count
 
+/////////////////--OS files--///////////////////////////////////////////////////////////////////////
 #include "bluetooth.h"
 #include "boot.h"
 #include "system.h"
 #include "application.h"
 #include "backend.h"
+void FEND_wifi_connecting();
+void FEND_WIFI_ICO();
+void FEND_BT_ICO();
+void FEND_GPS_ICO();
 void FEND_loadIcons();
 #include "screenBuilder.h"
 #include "frontend.h"
@@ -124,10 +145,11 @@ void FEND_loadIcons();
 
 void setup() {
   Serial.begin(115200);
- 
+  EEPROM.begin(EEPROM_SIZE);
   ttgo = TTGOClass::getWatch();
   ttgo->begin();
   ttgo->tft->setSwapBytes(true);
+  FEND_SB_welcome();
   BOOT();
   BOOT_setBrightness(loadBrightness);
   ttgo->tft->setTextSize(2);
@@ -135,12 +157,19 @@ void setup() {
   RTC_Date currentTime = ttgo->rtc->getDateTime();
   FEND_hour = currentTime.hour;
   FEND_minutes = currentTime.minute;
+  delay(2000);
+///////////--first time UI--/////////////////////////////
+  if(BEND_resetOS()){
+    Serial.println("Reset Success");
+  } else {
+    Serial.println("Welcome back");
+  }
+  FEND_SB_connectWiFi();
+///////////--regular UI--/////////////////////////////
+  FEND_loadIcons();
   APP_drawClockCenter();
   FEND_clock();
-  FEND_loadIcons();
 /////////////////////////////////////////////////
-startBluetooth();
-//BOOT_connectWiFi();
 //SYS_getAPPS();
 //APP_showAppList();
 /////////////////////////////////////////////////
@@ -155,8 +184,9 @@ void loop() {
   BEND_touchDetection();
   BEND_powerButtonInterrupt();
   BEND_swipeBrightness();
+  BEND_server();
   //////////////////////////////////
- if(showNetworkIcon && BEND_delay(300,0))  FEND_wifi_connecting();
+ if(WIFI_STATUS == 1 && BEND_delay(300,0)) FEND_wifi_connecting();
  if(showBatteryIcon && BEND_delay(5000,1)) FEND_battery_Icon();
  if(BEND_updateScreen() || clearScreen){
   ttgo->tft->fillScreen(TFT_BLACK);

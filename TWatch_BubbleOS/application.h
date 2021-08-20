@@ -36,6 +36,7 @@ void APP_showAppList(){
 
 void APP_digitalClock(){
     ttgo->tft->setTextSize(2);
+    ttgo->tft->setTextColor(TFT_DARKGREY , TFT_BLACK);
     ttgo->tft->drawString(String(ttgo->rtc->formatDateTime()), 70, 3);
 }
 
@@ -73,10 +74,11 @@ void APP_drawText(String text, uint8_t x, uint8_t y, uint8_t maxChar = -1,
   uint8_t h = 7*fontSize;
   uint8_t w = 6*fontSize;
   uint8_t charCount = text.length();
+  maxChar = maxChar <= 0 ? (charCount > 0 ? charCount : 1 ): maxChar;
   uint8_t rightX = x + charCount*w;
   uint8_t width = (maxChar-charCount)*w; 
-  if(maxChar > 0) ttgo->tft->fillRect(rightX , y, width , h , background);
-  
+  ttgo->tft->fillRect(rightX , y, width , h , background);
+  ttgo->tft->setTextSize(fontSize);
   ttgo->tft->setTextColor(color, background);
   ttgo->tft->drawString(text, x, y); 
 }
@@ -88,11 +90,18 @@ void APP_drawTextCenter(String text, uint8_t x=0, uint8_t y=100, uint8_t fontSiz
    ttgo->tft->drawString(text, newX, y); 
 }
 
+
+void APP_remainingTime(){
+//  if(String(batteryTime,1) == "0.0")
+ APP_drawText(String(battery)+" %",100 ,220,8 , 2, TFT_DARKGREY);
+  
+}
+
 void APP_scrollMenu(){
 
-  ttgo->tft->fillRect(50 , 40, 170 , 20 , TFT_BLACK);
+  ttgo->tft->fillRect(50 , 40, 160 , 20 , TFT_BLACK);
   ttgo->tft->fillRect(0 , 100,  240 , 40 , TFT_BLACK);
-  ttgo->tft->fillRect(50 , 180, 170 , 20 , TFT_BLACK);
+  ttgo->tft->fillRect(50 , 180, 160 , 20 , TFT_BLACK);
  ////////////////////
  if(scrollMenuList[currentMenuIndex]=="") currentMenuIndex -=1;
 ////////////////////
