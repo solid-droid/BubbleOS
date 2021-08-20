@@ -43,7 +43,7 @@
 //40-70 WIFI password
 //3     WIFI password length
 //2     WIFI SSID length
-//1    first time user
+//1     WIFI autoConnect
 //0    reset
 uint8_t clearEEPROM = 1;
 /////wifi
@@ -104,6 +104,7 @@ uint8_t WifiCred        = 0;             //0- no data , 1 -client , 2 - client +
 byte WIFI_STATUS     = 0;            //0-not connected 1-connecting 2-connected
 bool BT_STATUS       = false;            //false-not connected true-connected
 bool GPS_STATUS      = false;            //false-not connected true-connected
+bool reset           = false;
  
 ////---ICON configs---////////////
 bool showAlarmGPSIcon = true;
@@ -134,11 +135,19 @@ String APP_list[20];                     //Max external app count
 #include "system.h"
 #include "application.h"
 #include "backend.h"
+/////////--SHARED SERVICES--/////////
 void FEND_wifi_connecting();
 void FEND_WIFI_ICO();
 void FEND_BT_ICO();
 void FEND_GPS_ICO();
 void FEND_loadIcons();
+////////--SUB-SCREANS--//////////////
+#include "APP_PAGE.h"
+#include "NETWORK_PAGE.h"
+#include "POWER_PAGE.h"
+#include "GPS_ALARM_PAGE.h"
+
+//////////////////////////////////////
 #include "screenBuilder.h"
 #include "frontend.h"
 
@@ -149,7 +158,6 @@ void setup() {
   ttgo = TTGOClass::getWatch();
   ttgo->begin();
   ttgo->tft->setSwapBytes(true);
-  FEND_SB_welcome();
   BOOT();
   BOOT_setBrightness(loadBrightness);
   ttgo->tft->setTextSize(2);
@@ -157,7 +165,11 @@ void setup() {
   RTC_Date currentTime = ttgo->rtc->getDateTime();
   FEND_hour = currentTime.hour;
   FEND_minutes = currentTime.minute;
-  delay(2000);
+  if(EEPROM.read(1)!=1){
+      reset= true;
+      FEND_SB_welcome();
+      delay(2000);
+  }
 ///////////--first time UI--/////////////////////////////
   if(BEND_resetOS()){
     Serial.println("Reset Success");
@@ -185,6 +197,9 @@ void loop() {
   BEND_powerButtonInterrupt();
   BEND_swipeBrightness();
   BEND_server();
+  //////////////////////////////////
+  APP_digitalClock();
+  APP_remainingTime();
   //////////////////////////////////
  if(WIFI_STATUS == 1 && BEND_delay(300,0)) FEND_wifi_connecting();
  if(showBatteryIcon && BEND_delay(5000,1)) FEND_battery_Icon();

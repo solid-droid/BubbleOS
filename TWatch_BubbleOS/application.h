@@ -41,8 +41,37 @@ void APP_digitalClock(){
 }
 
 uint16_t prevSecond =0;
-void APP_drawSecondsNeedle(uint8_t seconds){
+//////////////////////////////////////////////////////////
+void APP_clearSecondsNeedle(uint8_t seconds){
   APP_clearRotatedImage(120,120,7,73, 6* (prevSecond-15<0?prevSecond+45:prevSecond-15),25);
+}
+
+bool prev_min_temp = false;
+bool prev_hour_temp = false;
+void APP_clearHourNeedle(uint8_t hour){
+    hour = hour>12?hour-12:hour;
+   if(hour > FEND_hour || (hour == 0 && !prev_hour_temp) ) {
+      if(hour == 0){
+        prev_hour_temp = true;
+      } else{
+         prev_hour_temp = false;
+      }
+      APP_clearRotatedImage(120,120,20,55, 30*(FEND_hour-3<0? FEND_hour+9: FEND_hour-3),25);
+    }
+}
+
+void APP_clearMinutesNeedle(uint8_t minutes){
+    if(minutes > FEND_minutes || (minutes==0 && !prev_min_temp)){
+       if(minutes == 0){
+        prev_min_temp = true;
+      }else{
+        prev_min_temp = false;
+      }
+      APP_clearRotatedImage(120,120,20,76,6*(FEND_minutes-15<0?FEND_minutes+45:FEND_minutes-15),25);
+    }    
+}
+//////////////////////////////////////////////////////////
+void APP_drawSecondsNeedle(uint8_t seconds){
   APP_rotateImage(120,120,7,73,needle_seconds, 6*(seconds-15<0?seconds+45:seconds-15),25);
   prevSecond = seconds;
 }
@@ -50,7 +79,6 @@ void APP_drawSecondsNeedle(uint8_t seconds){
 void APP_drawHourNeedle(uint8_t hour){
     hour = hour>12?hour-12:hour;
    if(hour > FEND_hour || hour == 0 ) {
-      APP_clearRotatedImage(120,120,20,55, 30*(FEND_hour-3<0? FEND_hour+9: FEND_hour-3),25);
       FEND_hour = hour;
     }
     APP_rotateImage(120,120,20,55,needle_hour, 30*(hour-3<0? hour+9: hour-3), 25);
@@ -58,7 +86,6 @@ void APP_drawHourNeedle(uint8_t hour){
 
 void APP_drawMinutesNeedle(uint8_t minutes){
     if(minutes > FEND_minutes || minutes==0){
-      APP_clearRotatedImage(120,120,20,76,6*(FEND_minutes-15<0?FEND_minutes+45:FEND_minutes-15),25);
       FEND_minutes = minutes;  
     }
     APP_rotateImage(120,120,20,76,needle_minutes,6*(minutes-15<0?minutes+45:minutes-15),25);
@@ -93,7 +120,7 @@ void APP_drawTextCenter(String text, uint8_t x=0, uint8_t y=100, uint8_t fontSiz
 
 void APP_remainingTime(){
 //  if(String(batteryTime,1) == "0.0")
- APP_drawText(String(battery)+" %",100 ,220,8 , 2, TFT_DARKGREY);
+ APP_drawText(String(battery < 100 ? battery : 100)+"%",140 ,220,4 , 2, TFT_DARKGREY);
   
 }
 

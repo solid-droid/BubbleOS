@@ -191,8 +191,8 @@ bool BEND_resetOS(){
       EEPROM.write(0, clearEEPROM);
       EEPROM.commit();
       delay(2);
-    //reset new user
-      EEPROM.write(1, 0);
+    //reset wifi auto connect
+      EEPROM.write(1, 1);
       EEPROM.commit();
       delay(2);
     return true;

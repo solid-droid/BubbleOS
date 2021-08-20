@@ -1,7 +1,10 @@
 void FEND_clock(){
-    APP_digitalClock();
-    APP_remainingTime();
     RTC_Date currentTime = ttgo->rtc->getDateTime();
+    //////////////////////
+    APP_clearHourNeedle(currentTime.hour);
+    APP_clearMinutesNeedle(currentTime.minute);
+    APP_clearSecondsNeedle(currentTime.second);
+    /////////////////////
     APP_drawHourNeedle(currentTime.hour);
     APP_drawMinutesNeedle(currentTime.minute);
     APP_drawSecondsNeedle(currentTime.second);
@@ -83,7 +86,7 @@ void FEND_network(){
     currentMenuIndex =1;
     scrollMenuList[0] = "ESP-NOW";
     scrollMenuList[1] = "WiFi";
-    scrollMenuList[2] = "Status";
+    scrollMenuList[2] = "BlueTooth";
     scrollMenuList[3] = "";
     APP_scrollMenu();
  }
@@ -100,10 +103,9 @@ void FEND_power(){
  if(screenLoad)
  {
     currentMenuIndex =1;
-    scrollMenuList[0] = "Modes";
-    scrollMenuList[1] = "Status";
-    scrollMenuList[2] = "Sleep";
-    scrollMenuList[3] = "";
+    scrollMenuList[0] = "Reset";
+    scrollMenuList[1] = "Sleep";
+    scrollMenuList[2] = "";
     APP_scrollMenu();
  }
   if(touch){
