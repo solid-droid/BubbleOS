@@ -6,24 +6,27 @@ Smart Watch OS for lilygo T-Watch 2020 v2
 ![ezgif-7-8682f3b8bb51](https://user-images.githubusercontent.com/32586986/120884801-f0f8bf00-c602-11eb-8271-17e863c66293.gif)
 
 > Short Term Goals  
-1. Use bluetooth to reset wifi name and password
-2. Battery charging icon
-3. Webserver -> set time, date, alarm , watch face
-4. Webserver - upload to EEPROM -> alarm list , watch face, apps
-5. Webserver -> read IOT data, read GPS data, read usage data
-6. ESP-NOW -> p2p IOT protocol for ESP32 / ESP8266
-7. APP UI -> Senser data UI, buttons, slider, joystick
-8. IOT over the internet
+1. Webserver -> set time, date , watch face
+2. Webserver - upload to EEPROM -> watch face, apps
+3. Webserver -> read IOT data, read GPS data, read usage data
+4. ESP-NOW -> p2p IOT protocol for ESP32 / ESP8266
+5. APP UI -> Senser data UI, buttons, slider, joystick
+6. IOT over the internet
 
 > File Structure  
 
 ![file_struct_watch (2)](https://user-images.githubusercontent.com/32586986/120196580-a3183b80-c23d-11eb-99d6-1febd3c8f595.png)
 
 ## Logs:  
+> 22-08-2021
+1. Use bluetooth to reset wifi ssid and password
+2. WebServer on 192.168.1.11
+3. MDNS not working properly , so not using.
+
 > 16-08-2021
-1. Taking out keyboard (should be doable with smartphone) - may come in future release
-2. Taking out JSON parser for external apps ( faster and easy to manage hardcoded UI) - may come in future release
-3. Bubble button for apps
+4. Taking out keyboard (should be doable with smartphone) - may come in future release
+5. Taking out JSON parser for external apps ( faster and easy to manage hardcoded UI) - may come in future release
+6. Bubble button for apps
 
 > 08-06-2021
 
