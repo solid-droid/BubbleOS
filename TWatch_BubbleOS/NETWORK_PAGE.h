@@ -1,18 +1,18 @@
 void NETWORK_BT_SSID(){
       BT_STATUS = true;
-      FEND_BT_ICO();
+      FEND_loadIcons();
       startBluetooth();
       APP_drawText("Use bluetooth" , 10, 60);
-      APP_drawText("Enter WiFi name:", 10, 90, 1);      
+      APP_drawText("Enter WiFi name:", 10, 90);      
 }
 
 void NETWORK_BT_password(){
-      APP_drawText(ssid, 10, 110, 1);
-      APP_drawText("Enter WiFi password: ", 10, 130, 1);
+      APP_drawText(ssid, 10, 110);
+      APP_drawText("Enter WiFi pass:", 10, 130);
 }
 
 void NETWORK_BT_Connect(){
-  APP_drawText(password, 10, 150, 1);
+  APP_drawText(password, 10, 150);
   stopBluetooth();
   BT_STATUS = false;
   FEND_BT_ICO();
@@ -38,11 +38,13 @@ void NETWORK_PAGE_CRED() {
    BEND_readWifiCred();
    APP_drawTextCenter(String(ssid), 0, 90);
    APP_drawTextCenter(String(password), 0, 110);
-   APP_drawButton(" RESET ", 50 , 150 , TFT_RED);
+   APP_drawButton(" RESET ", 70 , 160 , TFT_RED);
   }
-  if(APP_tapEvent(50, 100, 160)){
+  if(!NP_BT && APP_tapEvent(70, 110, 160)){
       NP_BT = true;
       WifiCred = 0;
+      savePower= false;
+      ttgo->tft->fillScreen(TFT_BLACK);
       NETWORK_BT_SSID();
   }
   if(NP_BT && WifiCred == 1){
@@ -53,6 +55,9 @@ void NETWORK_PAGE_CRED() {
     delay(1000);
     NP_BT = false;
     NP_wifi_cred = true;
+    ttgo->tft->fillScreen(TFT_BLACK);
+    FEND_loadIcons();
+    savePower= true;
   }
 }
 
@@ -61,6 +66,7 @@ void NETWORK_PAGE_WIFI_ON(){
       APP_drawButton(" OFF ", 10 , 130 , TFT_RED);
       APP_drawText(" ON", 150, 127 , 4);
       APP_drawTextCenter("            ", 0 , 170);
+      savePower= true;
       NP_wifi_off = false;
       NP_wifi_on = true;
 }
@@ -70,6 +76,7 @@ void NETWORK_PAGE_WIFI_OFF(){
       APP_drawButton(" ON ", 138 , 130 ,TFT_GREEN);
       APP_drawText(" OFF", 22 , 127 , 5);
       APP_drawTextCenter("192.168.1.11", 0 , 170);
+      savePower= false;
       NP_wifi_on = false;
       NP_wifi_off = true;
 }
@@ -92,7 +99,7 @@ void NETWORK_PAGE_WIFI(){
         }
       } else {
         APP_drawTextCenter("No WiFi Cred.", 0 , 120);
-        delay(2000);
+        delay(1500);
         NP_wifi_off = true;
       }
       FEND_loadIcons();

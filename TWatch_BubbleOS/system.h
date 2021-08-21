@@ -59,8 +59,8 @@ float SYS_getDischargeTime(){
 
 void SYS_savePower(){
     if(idleTimeTracker>idleTime0 && idleTimeTracker<idleTime1)      BOOT_setBrightness(7, false);
-    else if(idleTimeTracker>idleTime1 && idleTimeTracker<idleTime2) SYS_sleep();
-    else if(idleTimeTracker>idleTime2)                              BOOT_deepSleep();
+    else if(savePower && idleTimeTracker>idleTime1 && idleTimeTracker<idleTime2) SYS_sleep();
+    else if(savePower && idleTimeTracker>idleTime2)                              BOOT_deepSleep();
 }
 
 float SYS_timeMean=0;

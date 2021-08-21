@@ -36,6 +36,12 @@ class MyCallbacks: public BLECharacteristicCallbacks
   }
 };
 
+void stopBluetooth()
+{
+  BT_STATUS = false;
+  BLEDevice::deinit(false);
+}
+
 void startBluetooth(char* device = "BubbleOS")
 {
   BT_STATUS = true;
@@ -57,10 +63,4 @@ void startBluetooth(char* device = "BubbleOS")
 
   BLEAdvertising *pAdvertising = pServer->getAdvertising();
   pAdvertising->start();
-}
-
-void stopBluetooth()
-{
-  BT_STATUS = false;
-  BLEDevice::deinit(true);
 }

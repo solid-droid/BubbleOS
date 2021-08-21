@@ -17,6 +17,9 @@ void BEND_idleTimeTracker(){
     {
       previousMillis=millis();
       idleTimeTracker+=1;
+      if(idleTimeTracker>idleTime2){
+        idleTimeTracker = 0;
+      }
     }
 
 }
@@ -143,6 +146,7 @@ bool BEND_checkTap(uint8_t *pos){
 bool BEND_updateScreen(){
 uint8_t network[4]={0,50,0,50}, menu[4]={0,50,200,240} , battery[4]={190, 240 ,190, 240}, gps[4]={190, 240, 0 ,  60};
 if(tap){
+  savePower = true;
   uint8_t prev = currentScreen;
   bool refresh = false;
     if(BEND_checkTap(menu)){
@@ -172,15 +176,6 @@ bool BEND_srollMenuSelection() {
   if(tap && touchY > 85 && touchY < 145) return true;
   else return false;
   
-}
-
-void BEND_getWiFiClient(){
- 
-
-}
-void BEND_getWiFiPassword(){
- 
-
 }
 
 bool BEND_resetOS(){

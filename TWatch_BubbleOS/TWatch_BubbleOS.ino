@@ -106,6 +106,8 @@ byte WIFI_STATUS     = 0;                 //0-not connected 1-connecting 2-conne
 bool BT_STATUS       = false;            //false-not connected true-connected
 bool GPS_STATUS      = false;            //false-not connected true-connected
 bool reset           = false;
+
+bool savePower       = true;            //enable auto sleep after timeout
  
 ////---ICON configs---////////////
 bool showAlarmGPSIcon = true;
@@ -199,7 +201,6 @@ void setup() {
 
 int16_t angle =0;
 void loop() {
-  
   BEND_idleTimeTracker();
   BEND_systemMonitoring();
   BEND_touchDetection();
