@@ -89,22 +89,18 @@ void NETWORK_PAGE_WIFI(){
     }
     if(APP_tapEvent(120, 90, 110)){
       ttgo->tft->fillRect(0 , 100, 237 , 60 , TFT_BLACK);
-      if(WifiCred == 2){
         APP_drawTextCenter("Connecting...", 0 , 120);
         BEND_readWifiCred();
         if(BOOT_connectWiFi()){
           WIFI_STATUS = 2;
         }else {
+          APP_drawTextCenter("Check WiFi Cred.", 0 , 120);
+          delay(1000);
+          NP_wifi_off = true;
           NETWORK_PAGE_WIFI_ON();     
         }
-      } else {
-        APP_drawTextCenter("No WiFi Cred.", 0 , 120);
-        delay(1500);
-        NP_wifi_off = true;
-      }
       FEND_loadIcons();
     }
-  
   } else if(WIFI_STATUS == 2) {
     if(NP_wifi_on){
      NETWORK_PAGE_WIFI_OFF();
