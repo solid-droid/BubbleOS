@@ -77,7 +77,6 @@ void APP_drawSecondsNeedle(uint8_t seconds){
 }
 
 void APP_drawHourNeedle(uint8_t hour){
-    hour = hour>12?hour-12:hour;
    if(hour > FEND_hour || hour == 0 ) {
       FEND_hour = hour;
     }
@@ -119,7 +118,7 @@ void APP_drawTextCenter(String text, uint8_t x=0, uint8_t y=100, uint8_t fontSiz
 
 
 void APP_remainingTime(){
-//  if(String(batteryTime,1) == "0.0")
+// APP_drawText(String(batteryVolt, 1)+"V",140 ,220,4 , 2, TFT_DARKGREY);
  APP_drawText(String(battery < 100 ? battery : 100)+"%",140 ,220,4 , 2, TFT_DARKGREY);
   
 }
@@ -161,6 +160,30 @@ void APP_updateScrollMenu (){
         APP_scrollMenu_UP();
       }
 }
+
+void APP_drawButton(String text, uint8_t rectX=10 , uint8_t posY=100 , uint16_t color = TFT_WHITE)
+{
+   uint8_t textSize = text.length()*12;  
+   uint8_t rectY = posY-18;
+   uint8_t rectW = textSize+27;
+   uint8_t rectH = 14+27;
+   ttgo->tft->setTextSize(2);
+   ttgo->tft->setTextColor(TFT_WHITE);
+   ttgo->tft->fillRoundRect(rectX , rectY , rectW , rectH , 5 , 0x0394);
+   if(rectX==0)
+   APP_drawTextCenter(text, rectX , posY-3, 2);
+   else
+   ttgo->tft->drawString(text, rectX+12, posY-3); 
+   ttgo->tft->drawRoundRect(rectX -2 , rectY-2 , rectW+3 , rectH+3 , 10 , color);
+}
+
+bool APP_tapEvent(uint8_t x, uint8_t y, uint8_t w = 235, uint8_t h = 50){
+  if(tap && touchX > x && touchX < (x+w) && touchY > y && touchY < (y+h)){
+    return true;
+  } 
+  return false;
+}
+
 
 void APP_drawImage(const unsigned short *img, uint8_t x, uint8_t y, uint8_t w,  uint8_t h){
   ttgo->tft->pushImage(x, y,  w, h, img);

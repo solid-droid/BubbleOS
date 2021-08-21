@@ -18,7 +18,6 @@ void FEND_wifi_ON()
   ttgo->tft->pushImage(x, y,  w, h, wifi_4);
 }
 
-uint8_t FEND_wifi_counter = 0;
 void FEND_wifi_connecting()
 {
   uint8_t x= ICON_WIFI[0], y = ICON_WIFI[1], w = ICON_WIFI[2], h= ICON_WIFI[3];
@@ -28,7 +27,7 @@ void FEND_wifi_connecting()
     else if(FEND_wifi_counter == 4) ttgo->tft->pushImage(x, y,  w, h, wifi_3);
     else if(FEND_wifi_counter == 5) ttgo->tft->pushImage(x, y,  w, h, wifi_4);
     else FEND_wifi_counter = 0;
-    FEND_wifi_counter++;;
+    FEND_wifi_counter++;
 }
 
 void FEND_wifi_OFF(){
@@ -84,9 +83,9 @@ void FEND_network(){
  if(screenLoad)
  {
     currentMenuIndex =1;
-    scrollMenuList[0] = "ESP-NOW";
-    scrollMenuList[1] = "WiFi";
-    scrollMenuList[2] = "BlueTooth";
+    scrollMenuList[0] = "WiFi Cred";
+    scrollMenuList[1] = "WiFi Web";
+    scrollMenuList[2] = "WiFi Auto";
     scrollMenuList[3] = "";
     APP_scrollMenu();
  }
@@ -105,7 +104,8 @@ void FEND_power(){
     currentMenuIndex =1;
     scrollMenuList[0] = "Reset";
     scrollMenuList[1] = "Sleep";
-    scrollMenuList[2] = "";
+    scrollMenuList[2] = "Status";
+    scrollMenuList[3] = "";
     APP_scrollMenu();
  }
   if(touch){
@@ -122,8 +122,9 @@ void FEND_nav_alarm(){
  {
     currentMenuIndex =1;
     scrollMenuList[0] = "GPS";
-    scrollMenuList[1] = "Alarm";
+    scrollMenuList[1] = "ESP-NOW";
     scrollMenuList[2] = "Watch";
+    scrollMenuList[3] = "";
     APP_scrollMenu();
  }
 

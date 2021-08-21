@@ -33,9 +33,9 @@ void BEND_maintainWiFi(){
 
     wifiConnected = WiFi.status() != WL_CONNECTED ? false : true;
     if(wifiConnected){
-      APP_drawText("Wifi Connected", 3, 150, 16);
+       WIFI_STATUS = 2;
     }else{
-      APP_drawText("Wifi Disconnected", 3, 150, 16);
+      WIFI_STATUS = 0;
     }
 }
 bool BEND_touchPointChange(){

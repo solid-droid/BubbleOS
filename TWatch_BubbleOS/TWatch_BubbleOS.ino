@@ -75,8 +75,9 @@ bool irq                = false;
 bool rtcIrq             = false;
 char* SYS_devices[]     = {"display", "gps", "backlight", "touch"};
 uint8_t APP_count       = 0;  
-int  battery            = 100;          //Stores current battery percentage.                         
-float batteryTime       = 0;            //Stores battery time avaible before next charge.                 
+uint8_t  battery        = 100;          //Stores current battery percentage.                         
+float batteryTime       = 0;            //Stores battery time avaible before next charge.
+float batteryVolt       = 0;            //Volts       
 File APP_SD;
 File SYS_SD;
 int  idleTimeTracker    = 0;
@@ -101,7 +102,7 @@ String  scrollMenuList[10];              //Menu List
 bool clearScreen        = false;         //Enable to clear screen.
 uint8_t WifiCred        = 0;             //0- no data , 1 -client , 2 - client + pass
 
-byte WIFI_STATUS     = 0;            //0-not connected 1-connecting 2-connected
+byte WIFI_STATUS     = 0;                 //0-not connected 1-connecting 2-connected
 bool BT_STATUS       = false;            //false-not connected true-connected
 bool GPS_STATUS      = false;            //false-not connected true-connected
 bool reset           = false;
@@ -129,8 +130,15 @@ uint8_t  loadBrightness = 100;           //Brightness
 int  Max_APPS           = 20;            //Max external app count
 String APP_list[20];                     //Max external app count
 
+/////////////--SUB-SCREEN-variables--///////////////////////////////////////////////////////////////
+bool NP_wifi_on  = true;
+bool NP_wifi_off = true;
+bool NP_wifi_cred = true;
+
 /////////////////--OS files--///////////////////////////////////////////////////////////////////////
 #include "bluetooth.h"
+uint8_t FEND_wifi_counter = 0;
+void FEND_wifi_connecting();
 #include "boot.h"
 #include "system.h"
 #include "application.h"
@@ -177,6 +185,7 @@ void setup() {
     Serial.println("Welcome back");
   }
   FEND_SB_connectWiFi();
+  reset = false;
 ///////////--regular UI--/////////////////////////////
   FEND_loadIcons();
   APP_drawClockCenter();
@@ -197,6 +206,7 @@ void loop() {
   BEND_powerButtonInterrupt();
   BEND_swipeBrightness();
   BEND_server();
+  BEND_maintainWiFi();
   //////////////////////////////////
   APP_digitalClock();
   APP_remainingTime();
@@ -204,6 +214,9 @@ void loop() {
  if(WIFI_STATUS == 1 && BEND_delay(300,0)) FEND_wifi_connecting();
  if(showBatteryIcon && BEND_delay(5000,1)) FEND_battery_Icon();
  if(BEND_updateScreen() || clearScreen){
+  if(BT_STATUS){
+    stopBluetooth();
+  }
   ttgo->tft->fillScreen(TFT_BLACK);
   FEND_loadIcons();
   screenLoad = true;

@@ -8,7 +8,8 @@ void FEND_SB_apps(){
 }
 void FEND_SB_network(){
   switch(SB_Sub){
-    case 0: NETWORK_PAGE_ESPNOW();break;
+    case 0: NETWORK_PAGE_CRED();break;
+    case 1: NETWORK_PAGE_WIFI();break;
   }
 }
 void FEND_SB_power(){
@@ -41,6 +42,11 @@ void FEND_screenBuilder() {
   //1st load
   ttgo->tft->fillScreen(TFT_BLACK);
   FEND_loadIcons();
+  //reset Variables
+  NP_wifi_on  = true;
+  NP_wifi_off = true;
+  NP_wifi_cred = true;
+ 
  } else if (currentScreen == 5){
   //loop Load
   FEND_SB_PageType();
@@ -50,8 +56,8 @@ void FEND_screenBuilder() {
    currentScreen = 5;
 }
 
-void FEND_SB_connectWiFi(){
-  if(EEPROM.read(1)!=1){
+void FEND_SB_connectWiFi(bool force = false){
+  if(EEPROM.read(1)!=1 || force){
     if(reset){
       EEPROM.write(1,1);
       EEPROM.commit();
@@ -82,7 +88,7 @@ void FEND_SB_connectWiFi(){
       APP_drawText(password, 10, 120);
       stopBluetooth();
       BT_STATUS = false;
-      void FEND_BT_ICO();
+      FEND_BT_ICO();
       BEND_storeWifiCred();
       APP_drawText("Connecting to Wifi", 10, 140 , 19);
       if(BOOT_connectWiFi()){

@@ -38,7 +38,7 @@ class MyCallbacks: public BLECharacteristicCallbacks
 
 void startBluetooth(char* device = "BubbleOS")
 {
-
+  BT_STATUS = true;
   BLEDevice::init(device);
   BLEServer *pServer = BLEDevice::createServer();
 
@@ -61,5 +61,6 @@ void startBluetooth(char* device = "BubbleOS")
 
 void stopBluetooth()
 {
+  BT_STATUS = false;
   BLEDevice::deinit(true);
 }

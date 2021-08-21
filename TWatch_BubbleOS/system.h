@@ -41,6 +41,7 @@ void SYS_getAPPS(){
 
 void SYS_getBatteryLevel(){
     battery = ttgo->power->getBattPercentage();
+    batteryVolt = ttgo->power->getBattVoltage() / 1000;
 }
 
 float SYS_getDischargeTime(){

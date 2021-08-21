@@ -70,6 +70,7 @@ bool BOOT_connectWiFi(){
     uint8_t _count = 0;
     while (WiFi.status() != WL_CONNECTED && _count < 30) {
         delay(500);
+        FEND_wifi_connecting();
         Serial.print(".");
         _count++;
     }
