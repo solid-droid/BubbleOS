@@ -17,7 +17,7 @@ void BEND_idleTimeTracker(){
     {
       previousMillis=millis();
       idleTimeTracker+=1;
-      if(idleTimeTracker>idleTime2){
+      if(idleTimeTracker>idleTime2+1){
         idleTimeTracker = 0;
       }
     }
