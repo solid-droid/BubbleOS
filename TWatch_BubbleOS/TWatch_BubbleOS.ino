@@ -43,7 +43,7 @@
 //40-70 WIFI password
 //3     WIFI password length
 //2     WIFI SSID length
-//1     WIFI autoConnect
+//1     WIFI autoConnect -> 1= dont connect, 0=connect.
 //0    reset
 uint8_t clearEEPROM = 1;
 /////wifi
@@ -124,7 +124,7 @@ uint8_t ICON_BATTERY[4] = {197,198,43,42};
 //////////////--Tunable Variable--////////////////////////////////////////////////////////////////
 int  idleTime0          = 7;             //Maximum allowed idle time (sec) before screen dims (No touch)
 int  idleTime1          = 15;            //Maximum allowed idle time (sec) before screen turns off (No touch)
-int  idleTime2          = 120;           //Maximum allowed idle time (sec) before shutDown
+int  idleTime2          = 60;           //Maximum allowed idle time (sec) before shutDown
 int  dragThreshold      = 500;           //Threshold millis to treat tap as drag/hold.
 int  holdThreshold      = 0;             //Allowed movement range in hold mode.
 uint32_t  BEND_delay_register[20]={};    //Max number of async delay calls
@@ -133,9 +133,9 @@ int  Max_APPS           = 20;            //Max external app count
 String APP_list[20];                     //Max external app count
 
 /////////////--SUB-SCREEN-variables--///////////////////////////////////////////////////////////////
-bool NP_wifi_on  = true;
-bool NP_wifi_off = true;
-bool NP_wifi_cred = true;
+bool Button_on  = true;
+bool Button_off = true;
+bool Button_reset = true;
 
 /////////////////--OS files--///////////////////////////////////////////////////////////////////////
 #include "bluetooth.h"
@@ -175,27 +175,27 @@ void setup() {
   RTC_Date currentTime = ttgo->rtc->getDateTime();
   FEND_hour = currentTime.hour;
   FEND_minutes = currentTime.minute;
-  if(EEPROM.read(1)!=1){
-      reset= true;
-      FEND_SB_welcome();
-      delay(2000);
-  }
-///////////--first time UI--/////////////////////////////
+///////////--first time UI--//////////////////////////
   if(BEND_resetOS()){
     Serial.println("Reset Success");
   } else {
     Serial.println("Welcome back");
   }
-  FEND_SB_connectWiFi();
+  if(reset){
+      FEND_SB_welcome();
+      delay(2000);
+  }
   reset = false;
-///////////--regular UI--/////////////////////////////
+///////////--WiFi-autoConnect--//////////////////////
+  FEND_SB_connectWiFi();
+///////////--regular UI--////////////////////////////  
   FEND_loadIcons();
   APP_drawClockCenter();
   FEND_clock();
-/////////////////////////////////////////////////
+////////////////////////////////////////////////////
 //SYS_getAPPS();
 //APP_showAppList();
-/////////////////////////////////////////////////
+///////////////////////////////////////////////////
 
 }
 

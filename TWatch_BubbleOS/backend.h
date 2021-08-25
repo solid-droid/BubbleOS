@@ -182,12 +182,13 @@ bool BEND_resetOS(){
    WifiCred = 2;
   if(EEPROM.read(0)!= clearEEPROM){
     WifiCred = 0;
+    reset = true;
     //set cleared
       EEPROM.write(0, clearEEPROM);
       EEPROM.commit();
       delay(2);
     //reset wifi auto connect
-      EEPROM.write(1, 1);
+      EEPROM.write(1, 0);
       EEPROM.commit();
       delay(2);
     return true;

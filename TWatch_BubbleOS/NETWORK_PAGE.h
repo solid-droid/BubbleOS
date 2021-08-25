@@ -31,8 +31,8 @@ void NETWORK_BT_Connect(){
 
 bool NP_BT = false;
 void NETWORK_PAGE_CRED() {
-  if(NP_wifi_cred){
-   NP_wifi_cred = false;
+  if(Button_reset){
+   Button_reset = false;
    NP_BT = 0;
    APP_drawTextCenter("WiFi Cred", 0, 60, 3);
    BEND_readWifiCred();
@@ -54,7 +54,7 @@ void NETWORK_PAGE_CRED() {
     NETWORK_BT_Connect();
     delay(1000);
     NP_BT = false;
-    NP_wifi_cred = true;
+    Button_reset = true;
     ttgo->tft->fillScreen(TFT_BLACK);
     FEND_loadIcons();
     savePower= true;
@@ -67,8 +67,8 @@ void NETWORK_PAGE_WIFI_ON(){
       APP_drawText(" ON", 150, 127 , 4);
       APP_drawTextCenter("            ", 0 , 170);
       savePower= true;
-      NP_wifi_off = false;
-      NP_wifi_on = true;
+      Button_off = false;
+      Button_on = true;
 }
 
 void NETWORK_PAGE_WIFI_OFF(){
@@ -77,14 +77,14 @@ void NETWORK_PAGE_WIFI_OFF(){
       APP_drawText(" OFF", 22 , 127 , 5);
       APP_drawTextCenter("192.168.1.11", 0 , 170);
       savePower= false;
-      NP_wifi_on = false;
-      NP_wifi_off = true;
+      Button_on = false;
+      Button_off = true;
 }
 
 void NETWORK_PAGE_WIFI(){
   APP_drawTextCenter("WebServer", 0, 60, 3);
   if(WIFI_STATUS == 0){
-    if(NP_wifi_off){
+    if(Button_off){
      NETWORK_PAGE_WIFI_ON();
     }
     if(APP_tapEvent(120, 90, 110)){
@@ -96,13 +96,13 @@ void NETWORK_PAGE_WIFI(){
         }else {
           APP_drawTextCenter("Check WiFi Cred.", 0 , 120);
           delay(1000);
-          NP_wifi_off = true;
+          Button_off = true;
           NETWORK_PAGE_WIFI_ON();     
         }
       FEND_loadIcons();
     }
   } else if(WIFI_STATUS == 2) {
-    if(NP_wifi_on){
+    if(Button_on){
      NETWORK_PAGE_WIFI_OFF();
     }
     if(APP_tapEvent(0, 90 , 110)){
@@ -113,4 +113,41 @@ void NETWORK_PAGE_WIFI(){
     
   }
   
+}
+
+void NETWORK_WIFI_AUTO_ON(){
+      ttgo->tft->fillRect(0 , 100, 237 , 60 , TFT_BLACK);
+      APP_drawButton(" OFF ", 10 , 130 , TFT_RED);
+      APP_drawText(" ON", 150, 127 , 4);
+      Button_off = false;
+      Button_on = true;
+}
+
+void NETWORK_WIFI_AUTO_OFF(){
+      ttgo->tft->fillRect(0 , 100, 237 , 60 , TFT_BLACK);
+      APP_drawButton(" ON ", 138 , 130 ,TFT_GREEN);
+      APP_drawText(" OFF", 22 , 127 , 5);
+      Button_on = false;
+      Button_off = true;
+}
+
+void NETWORK_PAGE_WIFI_AUTO(){
+  APP_drawTextCenter("Auto-Connect", 0, 70, 3);
+   if(EEPROM.read(1)==1){
+        if(Button_off){
+         NETWORK_WIFI_AUTO_ON();
+        }
+        if(APP_tapEvent(120, 90, 110)){
+          EEPROM.write(1,0);
+          EEPROM.commit();
+        }
+  } else if(EEPROM.read(1)==0) {
+        if(Button_on){
+         NETWORK_WIFI_AUTO_OFF();
+        }
+        if(APP_tapEvent(0, 90 , 110)){
+          EEPROM.write(1,1);
+          EEPROM.commit();
+        }
+  }
 }

@@ -10,6 +10,7 @@ void FEND_SB_network(){
   switch(SB_Sub){
     case 0: NETWORK_PAGE_CRED();break;
     case 1: NETWORK_PAGE_WIFI();break;
+    case 2: NETWORK_PAGE_WIFI_AUTO();break;
   }
 }
 void FEND_SB_power(){
@@ -42,10 +43,10 @@ void FEND_screenBuilder() {
   //1st load
   ttgo->tft->fillScreen(TFT_BLACK);
   FEND_loadIcons();
-  //reset Variables
-  NP_wifi_on  = true;
-  NP_wifi_off = true;
-  NP_wifi_cred = true;
+  //reset button redraw escape Variables <==avoids flickering
+  Button_on  = true;
+  Button_off = true;
+  Button_reset = true;
  
  } else if (currentScreen == 5){
   //loop Load
