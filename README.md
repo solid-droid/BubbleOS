@@ -9,8 +9,9 @@
 2. Install Arduino IDE
 3. ESP32 boards in Arduino IDE using (https://dl.espressif.com/dl/package_esp32_index.json), 
 4. Install [ttygo library](https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library)
-5. compile and upload the code ( watch will use your computer time as its current time)
-6. use BLE Scanner app (android) to connect and set wifi SSID and password
+5. Set your T-watch version in config.h
+6. compile and upload the code ( watch will use your computer time as its current time)
+7. use BLE Scanner app (android) to connect and set wifi SSID and password
 
 
 # Short Term Goals  
