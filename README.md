@@ -6,9 +6,11 @@
 
 # How To Install
 1. Get lilygo T-Watch 2020 v2 ( any version is fine ).
-2. Install Arduino IDE, ESP32 boards , Install ttygo library
-3. compile and upload the code ( watch will use your computer time as its time)
-4. use BLE Scanner app (android) to connect and set wifi SSID and password.
+2. Install Arduino IDE
+3. ESP32 boards in Arduino IDE using (https://dl.espressif.com/dl/package_esp32_index.json), 
+4. Install [ttygo library](https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library)
+5. compile and upload the code ( watch will use your computer time as its current time)
+6. use BLE Scanner app (android) to connect and set wifi SSID and password
 
 
 # Short Term Goals  
