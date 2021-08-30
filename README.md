@@ -13,6 +13,3 @@ Smart Watch OS for lilygo T-Watch 2020 v2
 5. APP UI -> Senser data UI, buttons, slider, joystick
 6. IOT over the internet
 
-> File Structure  
-
-![file_struct_watch (2)](https://user-images.githubusercontent.com/32586986/120196580-a3183b80-c23d-11eb-99d6-1febd3c8f595.png)
